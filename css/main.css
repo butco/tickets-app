@@ -1,0 +1,66 @@
+.container-bg {
+  height: 100vh;
+  background: radial-gradient(circle at 85% 1%, rgba(237, 237, 237, 0.05) 0%, rgba(237, 237, 237, 0.05) 96%, transparent 96%, transparent 100%), radial-gradient(circle at 14% 15%, rgba(237, 237, 237, 0.05) 0%, rgba(237, 237, 237, 0.05) 1%, transparent 1%, transparent 100%), radial-gradient(circle at 60% 90%, rgba(237, 237, 237, 0.05) 0%, rgba(237, 237, 237, 0.05) 20%, transparent 20%, transparent 100%), radial-gradient(circle at 79% 7%, rgba(237, 237, 237, 0.05) 0%, rgba(237, 237, 237, 0.05) 78%, transparent 78%, transparent 100%), radial-gradient(circle at 55% 65%, rgba(237, 237, 237, 0.05) 0%, rgba(237, 237, 237, 0.05) 52%, transparent 52%, transparent 100%), linear-gradient(135deg, #2538de, #60bdf4);
+}
+
+.row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: -1;
+      -ms-flex: -1;
+          flex: -1;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: calc(100vh - 1.5rem);
+}
+
+.row .illustration {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 50%;
+}
+
+.row .illustration img {
+  width: 100%;
+}
+
+.row .card-login {
+  width: 40%;
+  margin: 30px;
+  background-color: #fefefe;
+  -webkit-filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+          filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+}
+
+.row .card-login .card-body {
+  width: 80%;
+  height: 100%;
+}
+
+.row .card-login .card-body h3 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.row .card-login .card-body button {
+  margin-bottom: 20px;
+  background: linear-gradient(37deg, #416ae5, #5e9cee);
+}
+
+.row .card-login .card-body .copyright {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0);
+}
+/*# sourceMappingURL=main.css.map */
