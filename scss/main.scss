@@ -1,51 +1,59 @@
 .container-bg {
   height: 100vh;
-  background: radial-gradient(
-      circle at 85% 1%,
-      hsla(190, 0%, 93%, 0.05) 0%,
-      hsla(190, 0%, 93%, 0.05) 96%,
-      transparent 96%,
-      transparent 100%
+  background: linear-gradient(
+      45deg,
+      rgba(143, 64, 240, 0.2) 0%,
+      rgba(143, 64, 240, 0.2) 16.667%,
+      rgba(124, 44, 236, 0.2) 16.667%,
+      rgba(124, 44, 236, 0.2) 33.334%,
+      rgba(161, 85, 244, 0.2) 33.334%,
+      rgba(161, 85, 244, 0.2) 50.001%,
+      rgba(198, 125, 252, 0.2) 50.001%,
+      rgba(198, 125, 252, 0.2) 66.668%,
+      rgba(180, 105, 248, 0.2) 66.668%,
+      rgba(180, 105, 248, 0.2) 83.335%,
+      rgba(106, 24, 232, 0.2) 83.335%,
+      rgba(106, 24, 232, 0.2) 100.002%
     ),
-    radial-gradient(
-      circle at 14% 15%,
-      hsla(190, 0%, 93%, 0.05) 0%,
-      hsla(190, 0%, 93%, 0.05) 1%,
-      transparent 1%,
-      transparent 100%
+    linear-gradient(
+      22.5deg,
+      rgba(143, 64, 240, 0.2) 0%,
+      rgba(143, 64, 240, 0.2) 16.667%,
+      rgba(124, 44, 236, 0.2) 16.667%,
+      rgba(124, 44, 236, 0.2) 33.334%,
+      rgba(161, 85, 244, 0.2) 33.334%,
+      rgba(161, 85, 244, 0.2) 50.001%,
+      rgba(198, 125, 252, 0.2) 50.001%,
+      rgba(198, 125, 252, 0.2) 66.668%,
+      rgba(180, 105, 248, 0.2) 66.668%,
+      rgba(180, 105, 248, 0.2) 83.335%,
+      rgba(106, 24, 232, 0.2) 83.335%,
+      rgba(106, 24, 232, 0.2) 100.002%
     ),
-    radial-gradient(
-      circle at 60% 90%,
-      hsla(190, 0%, 93%, 0.05) 0%,
-      hsla(190, 0%, 93%, 0.05) 20%,
-      transparent 20%,
-      transparent 100%
+    linear-gradient(
+      0deg,
+      rgba(143, 64, 240, 0.2) 0%,
+      rgba(143, 64, 240, 0.2) 16.667%,
+      rgba(124, 44, 236, 0.2) 16.667%,
+      rgba(124, 44, 236, 0.2) 33.334%,
+      rgba(161, 85, 244, 0.2) 33.334%,
+      rgba(161, 85, 244, 0.2) 50.001%,
+      rgba(198, 125, 252, 0.2) 50.001%,
+      rgba(198, 125, 252, 0.2) 66.668%,
+      rgba(180, 105, 248, 0.2) 66.668%,
+      rgba(180, 105, 248, 0.2) 83.335%,
+      rgba(106, 24, 232, 0.2) 83.335%,
+      rgba(106, 24, 232, 0.2) 100.002%
     ),
-    radial-gradient(
-      circle at 79% 7%,
-      hsla(190, 0%, 93%, 0.05) 0%,
-      hsla(190, 0%, 93%, 0.05) 78%,
-      transparent 78%,
-      transparent 100%
-    ),
-    radial-gradient(
-      circle at 55% 65%,
-      hsla(190, 0%, 93%, 0.05) 0%,
-      hsla(190, 0%, 93%, 0.05) 52%,
-      transparent 52%,
-      transparent 100%
-    ),
-    linear-gradient(135deg, rgb(37, 56, 222), rgb(96, 189, 244));
-
-  // .navbar-brand {
-  //   color: #fefefe;
-  //   font-size: x-large;
-  // }
+    linear-gradient(90deg, rgb(179, 179, 179), rgb(96, 96, 96));
+  // background-color: #360059;
+  // background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 1000'%3E%3Cg fill-opacity='0.96'%3E%3Ccircle fill='%23360059' cx='50' cy='0' r='50'/%3E%3Cg fill='%233b005e' %3E%3Ccircle cx='0' cy='50' r='50'/%3E%3Ccircle cx='100' cy='50' r='50'/%3E%3C/g%3E%3Ccircle fill='%23400164' cx='50' cy='100' r='50'/%3E%3Cg fill='%23450169' %3E%3Ccircle cx='0' cy='150' r='50'/%3E%3Ccircle cx='100' cy='150' r='50'/%3E%3C/g%3E%3Ccircle fill='%234a026e' cx='50' cy='200' r='50'/%3E%3Cg fill='%23500274' %3E%3Ccircle cx='0' cy='250' r='50'/%3E%3Ccircle cx='100' cy='250' r='50'/%3E%3C/g%3E%3Ccircle fill='%23550279' cx='50' cy='300' r='50'/%3E%3Cg fill='%235b037e' %3E%3Ccircle cx='0' cy='350' r='50'/%3E%3Ccircle cx='100' cy='350' r='50'/%3E%3C/g%3E%3Ccircle fill='%23600384' cx='50' cy='400' r='50'/%3E%3Cg fill='%23660489' %3E%3Ccircle cx='0' cy='450' r='50'/%3E%3Ccircle cx='100' cy='450' r='50'/%3E%3C/g%3E%3Ccircle fill='%236c048e' cx='50' cy='500' r='50'/%3E%3Cg fill='%23720494' %3E%3Ccircle cx='0' cy='550' r='50'/%3E%3Ccircle cx='100' cy='550' r='50'/%3E%3C/g%3E%3Ccircle fill='%23780499' cx='50' cy='600' r='50'/%3E%3Cg fill='%237e049f' %3E%3Ccircle cx='0' cy='650' r='50'/%3E%3Ccircle cx='100' cy='650' r='50'/%3E%3C/g%3E%3Ccircle fill='%238404a4' cx='50' cy='700' r='50'/%3E%3Cg fill='%238a04a9' %3E%3Ccircle cx='0' cy='750' r='50'/%3E%3Ccircle cx='100' cy='750' r='50'/%3E%3C/g%3E%3Ccircle fill='%239003af' cx='50' cy='800' r='50'/%3E%3Cg fill='%239603b4' %3E%3Ccircle cx='0' cy='850' r='50'/%3E%3Ccircle cx='100' cy='850' r='50'/%3E%3C/g%3E%3Ccircle fill='%239d02b9' cx='50' cy='900' r='50'/%3E%3Cg fill='%23a301bf' %3E%3Ccircle cx='0' cy='950' r='50'/%3E%3Ccircle cx='100' cy='950' r='50'/%3E%3C/g%3E%3Ccircle fill='%23aa00c4' cx='50' cy='1000' r='50'/%3E%3C/g%3E%3C/svg%3E");
+  // background-attachment: fixed;
+  // background-size: contain;
 }
 
 .row {
   display: flex;
-  flex: -1;
   align-items: center;
   justify-content: center;
   height: calc(100vh - 1.5rem);
@@ -61,28 +69,32 @@
   .card-login {
     width: 40%;
     margin: 30px;
-    // background-color: rgba(0, 0, 0, 0.05);
     background-color: #fefefe;
-    // color: #fefefe;
     filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
     .card-body {
-      width: 80%;
-      height: 100%;
       h3 {
         text-align: center;
         margin: 20px 0;
       }
+      .form-control:focus {
+        border-color: rgba(106, 24, 232, 0.2);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+          0 0 8px rgb(153, 0, 180);
+      }
       button {
         margin-bottom: 20px;
-        background: linear-gradient(
-          37deg,
-          rgb(65, 106, 229),
-          rgb(94, 156, 238)
-        );
+        background: linear-gradient(37deg, rgb(54, 0, 88), rgb(162, 125, 209));
       }
       .copyright {
         text-align: center;
         background-color: rgba(0, 0, 0, 0);
+        .copy-link {
+          color: rgb(162, 125, 209);
+          &:hover {
+            text-decoration: none;
+            color: rgb(54, 0, 88);
+          }
+        }
       }
     }
   }

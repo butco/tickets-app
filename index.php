@@ -1,6 +1,6 @@
 <?php
 
-include_once "config/Db.php";
+require "config/init.php";
 
 $conn = new Db();
 $conn->connect();
@@ -19,7 +19,7 @@ $conn->connect();
     </nav> -->
     <div class="row">
         <div class="card card-login">
-            <div class="card-body m-auto">
+            <div class="card-body">
                 <form>
                     <h3>TicketsApp</h3>
                     <div class="form-group">
@@ -35,7 +35,9 @@ $conn->connect();
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div> -->
                     <button type="submit" class="btn btn-primary btn-block btn-login">Login</button>
-                    <div class="copyright">2020 &copy; ButcoSoft. All rights reserved.</div>
+                    <div class="copyright">2020 &copy; <a href="https://www.ButcoSoft.com"
+                            class="copy-link">ButcoSoft</a>. All
+                        rights reserved.</div>
                 </form>
             </div>
         </div>
