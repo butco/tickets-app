@@ -2,39 +2,35 @@
 
 require "config/init.php";
 
-$conn = new Db();
-$conn->connect();
+$users->logged_in_redirect();
 
+if (!empty($_POST['btnLogin'])) {
+
+}
 ?>
 
 <?php include "includes/header.php";?>
 
 <div class="container-fluid container-bg">
-    <!-- Image and text -->
-    <!-- <nav class="navbar navbar-light" style="background-color:rgba(0,0,0,0)">
-        <a class="navbar-brand" href="index.php">
-            <img src="" width="30" height="30" class="d-inline-block align-top" alt="">
-            TicketsApp
-        </a>
-    </nav> -->
     <div class="row">
         <div class="card card-login">
             <div class="card-body">
                 <form>
                     <h3>TicketsApp</h3>
-                    <div class="form-group">
+                    <div class="form-group" method="POST">
                         <label for="emailInput">Email address</label>
-                        <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
+                        <input type="email" class="form-control" id="emailInput" name="inputEmail"
+                            aria-describedby="emailHelp">
                     </div>
                     <div class="form-group">
                         <label for="passInput">Password</label>
-                        <input type="password" class="form-control" id="passInput">
+                        <input type="password" class="form-control" name="inputPassword" id="passInput">
                     </div>
                     <!-- <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div> -->
-                    <button type="submit" class="btn btn-primary btn-block btn-login">Login</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-login" name="btnLogin">Login</button>
                     <div class="copyright">2020 &copy; <a href="https://www.ButcoSoft.com"
                             class="copy-link">ButcoSoft</a>. All
                         rights reserved.</div>
