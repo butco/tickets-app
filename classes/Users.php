@@ -12,7 +12,7 @@ class Users
     //Login user
     public function login($email, $password)
     {
-        $sql = "SELECT user_id, user_password FROM users WHERE user_email=:email";
+        $sql = "SELECT id, user_password FROM users WHERE user_email=:email";
         $stmt = $this->db->prepare($sql);
         $stmt->bindparam(":email", $email);
         try {
@@ -20,7 +20,7 @@ class Users
             if ($stmt->rowCount() > 0) {
                 $result = $stmt->fetch(PDO::FETCH_OBJ);
                 $stored_pass = $result->user_password;
-                $user_id = $result->user_id;
+                $user_id = $result->id;
                 //check if the passwords are the same
                 if (password_verify($password, $stored_pass)) {
                     return $user_id;
@@ -32,7 +32,25 @@ class Users
             die($e->getMessage());
         }
     }
-    //Logout user
+
+    //Check if email exists in the database
+    public function EmailExists($email)
+    {
+        $sql = "SELECT id FROM users WHERE user_email=:email";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":email", $email);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+
+    }
 
     //Check if user is logged in
     public function logged_in()
@@ -59,5 +77,32 @@ class Users
         if (!$this->logged_in()) {
             header("location:index.php");
         }
+    }
+
+    //User Details
+    public function UserDetails($id)
+    {
+        $sql = "SELECT * FROM users WHERE $id=:id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":id", $id);
+
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $result = $stmt->fetch(PDO::FETCH_OBJ);
+                return $result;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+
+    }
+
+    //Logout user
+    public function Logout()
+    {
+        unset($_SESSION['user_id']);
+        session_destroy();
+        $this->logged_out_redirect();
     }
 }

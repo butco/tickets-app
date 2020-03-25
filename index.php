@@ -3,10 +3,28 @@
 require "config/init.php";
 
 $users->logged_in_redirect();
+$login_errors = '';
 
-if (!empty($_POST['btnLogin'])) {
+if (isset($_POST['btnLogin'])) {
+    $email = trim($_POST['inputEmail']);
+    $password = trim($_POST['inputPassword']);
+
+    if (empty($email) || empty($password)) {
+        $login_errors = "Please fill in your email and password!";
+    } else if ($users->EmailExists($email) === false) {
+        $login_errors = "This email does not exist in the database!";
+    } else {
+        $user_id = $users->Login($email, $password);
+        if ($user_id === false) {
+            $login_errors = "ERROR! Wrong password. Please try again!";
+        } else {
+            $_SESSION["user_id"] = $user_id;
+            header("location: dashboard.php");
+        }
+    }
 
 }
+
 ?>
 
 <?php include "includes/header.php";?>
@@ -15,12 +33,17 @@ if (!empty($_POST['btnLogin'])) {
     <div class="row">
         <div class="card card-login">
             <div class="card-body">
-                <form>
+                <form method="POST">
                     <h3>TicketsApp</h3>
-                    <div class="form-group" method="POST">
+                    <?php if ($login_errors != ""): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <strong><?=$login_errors;?></strong>
+                    </div>
+                    <?php endif;?>
+                    <div class="form-group">
                         <label for="emailInput">Email address</label>
                         <input type="email" class="form-control" id="emailInput" name="inputEmail"
-                            aria-describedby="emailHelp">
+                            aria-describedby="emailHelp" value=<?=$email;?>>
                     </div>
                     <div class="form-group">
                         <label for="passInput">Password</label>
