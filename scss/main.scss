@@ -1,3 +1,5 @@
+@import "constants";
+
 .container-bg {
   height: 100vh;
   background: linear-gradient(
@@ -69,7 +71,7 @@
   .card-login {
     // width: 40%;
     margin: 30px;
-    background-color: #fefefe;
+    background-color: $card-login;
     filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
     .card-body {
       h3 {
@@ -83,24 +85,81 @@
       }
       button {
         margin-bottom: 20px;
-        background: linear-gradient(37deg, rgb(54, 0, 88), rgb(162, 125, 209));
+        background: linear-gradient(
+          37deg,
+          $theme-color-dark,
+          $theme-color-light
+        );
       }
       .copyright {
         text-align: center;
-        background-color: rgba(0, 0, 0, 0);
         .copy-link {
-          color: rgb(162, 125, 209);
+          color: $theme-color-light;
           &:hover {
             text-decoration: none;
-            color: rgb(54, 0, 88);
+            color: $theme-color-dark;
           }
         }
       }
     }
   }
 }
-
+// ***** Dashboard.php *****
 .sidebar {
-  background: rgba(0, 0, 0, 0.6);
+  background: $sidebar-color;
   height: 100vh;
+  .brand {
+    font-size: 1.8em;
+    border-bottom: 1px groove rgba(255, 255, 255, 0.3);
+  }
+  .profile {
+    &-photo {
+      text-align: center;
+      padding: 1em 0;
+      img {
+        width: 50%;
+        border: 7px solid white;
+        border-radius: 50%;
+      }
+    }
+    &-welcome {
+      font-size: 16px;
+    }
+    &-links {
+      li {
+        list-style: none;
+        margin-bottom: 5px;
+      }
+      a {
+        text-decoration: none;
+        color: $nav-text-color;
+        &:hover {
+          color: $nav-text-color-hover;
+        }
+      }
+    }
+  }
+  .admin-links {
+    &-title {
+      // text-align: center;
+      text-transform: uppercase;
+      padding-top: 10px;
+      color: $nav-text-color;
+      border-bottom: 1px groove rgba(255, 255, 255, 0.3);
+    }
+    li {
+      list-style: none;
+      margin-bottom: 5px;
+      &:first-child {
+        margin-top: 10px;
+      }
+    }
+    a {
+      text-decoration: none;
+      color: $nav-text-color;
+      &:hover {
+        color: $nav-text-color-hover;
+      }
+    }
+  }
 }

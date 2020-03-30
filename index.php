@@ -45,7 +45,7 @@ if (isset($_POST['btnLogin'])) {
                         <div class="form-group">
                             <label for="emailInput">Email address</label>
                             <input type="email" class="form-control" id="emailInput" autocomplete="off" autofocus
-                                name="inputEmail" aria-describedby="emailHelp" value="<?php echo $email; ?>">
+                                name="inputEmail" aria-describedby="emailHelp" value="admin@ticketsapp.com">
                         </div>
                         <div class="form-group">
                             <label for="passInput">Password</label>
@@ -55,7 +55,8 @@ if (isset($_POST['btnLogin'])) {
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div> -->
-                        <button type="submit" class="btn btn-primary btn-block btn-login" name="btnLogin">Login</button>
+                        <button type="submit" class="btn btn-secondary btn-block btn-login"
+                            name="btnLogin">Login</button>
                         <div class="copyright">2020 &copy; <a href="https://www.ButcoSoft.com"
                                 class="copy-link">ButcoSoft</a>. All
                             rights reserved.</div>
