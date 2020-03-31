@@ -98,6 +98,39 @@ class Users
 
     }
 
+    //User Groups
+    public function UsersGroups()
+    {
+        $sql = "SELECT * FROM users_groups";
+        $stmt = $this->db->prepare($sql);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                return $result;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    //User Groups by ID
+    public function UsersGroupsByID($id)
+    {
+        $sql = "SELECT * FROM users_groups WHERE group_id=:id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":id", $id);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $result = $stmt->fetch(PDO::FETCH_OBJ);
+                return $result;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
     //Logout user
     public function Logout()
     {
@@ -105,4 +138,7 @@ class Users
         session_destroy();
         $this->logged_out_redirect();
     }
+
+    //Update Users
+
 }

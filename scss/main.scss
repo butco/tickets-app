@@ -1,5 +1,26 @@
 @import "constants";
 
+// General use
+.form-control:focus {
+  border-color: rgba(106, 24, 232, 0.2);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgb(153, 0, 180);
+}
+button {
+  margin-bottom: 20px;
+  background: linear-gradient(37deg, $theme-color-dark, $theme-color-light);
+}
+
+.copyright {
+  text-align: center;
+  .copy-link {
+    color: $theme-color-light;
+    &:hover {
+      text-decoration: none;
+      color: $theme-color-dark;
+    }
+  }
+}
+// End General use
 .container-bg {
   height: 100vh;
   background: linear-gradient(
@@ -71,46 +92,26 @@
   .card-login {
     // width: 40%;
     margin: 30px;
-    background-color: $card-login;
+    background-color: $card-bg-color;
     filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
     .card-body {
       h3 {
         text-align: center;
         margin: 20px 0;
       }
-      .form-control:focus {
-        border-color: rgba(106, 24, 232, 0.2);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-          0 0 8px rgb(153, 0, 180);
-      }
-      button {
-        margin-bottom: 20px;
-        background: linear-gradient(
-          37deg,
-          $theme-color-dark,
-          $theme-color-light
-        );
-      }
-      .copyright {
-        text-align: center;
-        .copy-link {
-          color: $theme-color-light;
-          &:hover {
-            text-decoration: none;
-            color: $theme-color-dark;
-          }
-        }
-      }
     }
   }
 }
 // ***** Dashboard.php *****
+.container-full-height {
+  height: 100%;
+}
 .sidebar {
   background: $sidebar-color;
-  height: 100vh;
+  // height: 100%;
   .brand {
     font-size: 1.8em;
-    border-bottom: 1px groove rgba(255, 255, 255, 0.3);
+    border-bottom: $menu-hr;
   }
   .profile {
     &-photo {
@@ -118,7 +119,7 @@
       padding: 1em 0;
       img {
         width: 50%;
-        border: 7px solid white;
+        border: 7px solid $profile-photo-border-color;
         border-radius: 50%;
       }
     }
@@ -145,7 +146,7 @@
       text-transform: uppercase;
       padding-top: 10px;
       color: $nav-text-color;
-      border-bottom: 1px groove rgba(255, 255, 255, 0.3);
+      border-bottom: $menu-hr;
     }
     li {
       list-style: none;
@@ -159,6 +160,28 @@
       color: $nav-text-color;
       &:hover {
         color: $nav-text-color-hover;
+      }
+    }
+  }
+}
+
+// ***** Profile.php *****
+.edit-profile {
+  margin: 50px;
+
+  &-card {
+    background-color: $card-bg-color;
+    filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+  }
+  .card-body {
+    .edit-profile-photo {
+      width: 100%;
+      text-align: center;
+      img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 5px solid $profile-photo-border-color;
       }
     }
   }

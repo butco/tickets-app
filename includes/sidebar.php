@@ -8,6 +8,7 @@
             <strong><?php echo $user->user_fullname; ?></strong></div>
         <div class="profile-links">
             <ul>
+                <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="profile.php">Profile</a></li>
                 <li><a href="#">My Projects</a></li>
                 <li><a href="#">My Tickets</a></li>

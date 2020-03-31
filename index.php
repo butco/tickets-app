@@ -56,7 +56,7 @@ if (isset($_POST['btnLogin'])) {
                         <label class="form-check-label" for="exampleCheck1">Check me out</label>
                     </div> -->
                         <button type="submit" class="btn btn-secondary btn-block btn-login"
-                            name="btnLogin">Login</button>
+                            name="btnLogin">LOGIN</button>
                         <div class="copyright">2020 &copy; <a href="https://www.ButcoSoft.com"
                                 class="copy-link">ButcoSoft</a>. All
                             rights reserved.</div>

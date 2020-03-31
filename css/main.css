@@ -1,3 +1,27 @@
+.form-control:focus {
+  border-color: rgba(106, 24, 232, 0.2);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #9900b4;
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #9900b4;
+}
+
+button {
+  margin-bottom: 20px;
+  background: linear-gradient(37deg, #360058, #a27dd1);
+}
+
+.copyright {
+  text-align: center;
+}
+
+.copyright .copy-link {
+  color: #a27dd1;
+}
+
+.copyright .copy-link:hover {
+  text-decoration: none;
+  color: #360058;
+}
+
 .container-bg {
   height: 100vh;
   background: linear-gradient(45deg, rgba(143, 64, 240, 0.2) 0%, rgba(143, 64, 240, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 100.002%), linear-gradient(22.5deg, rgba(143, 64, 240, 0.2) 0%, rgba(143, 64, 240, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 100.002%), linear-gradient(0deg, rgba(143, 64, 240, 0.2) 0%, rgba(143, 64, 240, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 100.002%), linear-gradient(90deg, #b3b3b3, #606060);
@@ -44,33 +68,12 @@
   margin: 20px 0;
 }
 
-.row-index .card-login .card-body .form-control:focus {
-  border-color: rgba(106, 24, 232, 0.2);
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #9900b4;
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #9900b4;
-}
-
-.row-index .card-login .card-body button {
-  margin-bottom: 20px;
-  background: linear-gradient(37deg, #360058, #a27dd1);
-}
-
-.row-index .card-login .card-body .copyright {
-  text-align: center;
-}
-
-.row-index .card-login .card-body .copyright .copy-link {
-  color: #a27dd1;
-}
-
-.row-index .card-login .card-body .copyright .copy-link:hover {
-  text-decoration: none;
-  color: #360058;
+.container-full-height {
+  height: 100%;
 }
 
 .sidebar {
   background: rgba(0, 0, 0, 0.6);
-  height: 100vh;
 }
 
 .sidebar .brand {
@@ -85,7 +88,7 @@
 
 .sidebar .profile-photo img {
   width: 50%;
-  border: 7px solid white;
+  border: 7px solid rgba(0, 0, 0, 0.2);
   border-radius: 50%;
 }
 
@@ -130,5 +133,27 @@
 
 .sidebar .admin-links a:hover {
   color: #fff;
+}
+
+.edit-profile {
+  margin: 50px;
+}
+
+.edit-profile-card {
+  background-color: #fefefe;
+  -webkit-filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+          filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+}
+
+.edit-profile .card-body .edit-profile-photo {
+  width: 100%;
+  text-align: center;
+}
+
+.edit-profile .card-body .edit-profile-photo img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid rgba(0, 0, 0, 0.2);
 }
 /*# sourceMappingURL=main.css.map */
