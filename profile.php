@@ -14,6 +14,8 @@ $newEmail = "";
 $newFullName = "";
 $newPassword = "";
 $newProfilePhoto = "";
+$newGroupId = "";
+$newActive = "";
 
 //check if user is active
 if ($user->user_is_active == 1) {
@@ -50,23 +52,23 @@ if (isset($_POST['btnUpdate'])) {
             $target = "images/users/" . $profilePhotoName;
             if (!file_exists($target)) {
                 move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
-                $newProfilePhoto = $target;
             }
+            $newProfilePhoto = $target;
         } else {
             $newProfilePhoto = $user->user_photo;
         }
-        echo $newProfilePhoto;
+        $newGroupId = $_POST['usersGroupsSelect'];
+        $newActive = $_POST['usersActiveSelect'];
+        //do the update in the DB
+        if ($users->Update($user->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto, $newGroupId, $newActive)) {
+            $edit_errors = "Update successfully!";
+            $css_class = "alert-success";
+            header("location:profile.php");
+        } else {
+            $edit_errors = "Something went wrong!";
+            $css_class = "alert-danger";
+        }
     }
-    //upload profile photo to the server
-    // $profilePhotoName = time() . "_" . $_FILES['profileImage']['name'];
-    // $target = "images/users/" . $profilePhotoName;
-    // if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $target)) {
-    //     $edit_errors = 'Upload successfully done!';
-    //     $css_class = "alert-success";
-    // } else {
-    //     $edit_errors = 'Failed to upload the profile photo!';
-    //     $css_class = "alert-danger";
-    // }
 }
 include "includes/header.php";
 ?>
