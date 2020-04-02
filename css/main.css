@@ -72,6 +72,11 @@ button {
   height: 100%;
 }
 
+.dashboard-alert {
+  margin: 0;
+  text-align: center;
+}
+
 .sidebar {
   background: rgba(0, 0, 0, 0.6);
 }
@@ -87,7 +92,8 @@ button {
 }
 
 .sidebar .profile-photo img {
-  width: 50%;
+  width: 150px;
+  height: 150px;
   border: 7px solid rgba(0, 0, 0, 0.2);
   border-radius: 50%;
 }

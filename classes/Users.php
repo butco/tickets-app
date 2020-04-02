@@ -139,8 +139,8 @@ class Users
         $this->logged_out_redirect();
     }
 
-    //Update Users
-    public function Update($id, $email, $password, $fullName, $photo, $group, $active)
+    //Update Details by Admins
+    public function UpdateByAdmins($id, $email, $password, $fullName, $photo, $group, $active)
     {
         $sql = "UPDATE users SET user_email=:email,user_password=:pass,user_fullname=:fullname,user_photo=:photo,user_group_id=:group_id,user_is_active=:active WHERE id=:id";
         $stmt = $this->db->prepare($sql);
@@ -151,6 +151,27 @@ class Users
         $stmt->bindparam(":photo", $photo);
         $stmt->bindparam(":group_id", $group);
         $stmt->bindparam(":active", $active);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+    //Update Details by Standard Users
+    public function UpdateByUsers($id, $email, $password, $fullName, $photo)
+    {
+        $sql = "UPDATE users SET user_email=:email,user_password=:pass,user_fullname=:fullname,user_photo=:photo WHERE id=:id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":id", $id);
+        $stmt->bindparam(":email", $email);
+        $stmt->bindparam(":pass", $password);
+        $stmt->bindparam(":fullname", $fullName);
+        $stmt->bindparam(":photo", $photo);
         try {
             $stmt->execute();
             if ($stmt->rowCount() > 0) {

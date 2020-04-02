@@ -8,6 +8,7 @@ $user = $users->UserDetails($_SESSION['user_id']);
 $users_groups = $users->UsersGroups();
 $user_active = "";
 $edit_errors = "";
+$edit_success = "";
 $css_class = "";
 $profilePhotoName = "";
 $newEmail = "";
@@ -29,7 +30,7 @@ if (isset($_POST['btnUpdate'])) {
 
     //check if values changed
     if (empty($_POST['inputFullName']) || empty($_POST['inputEmail'])) {
-        $edit_errors = "Please fill in your full name and email address!";
+        $edit_errors .= "Please fill in your full name and email address!<br>";
         $css_class = "alert-danger";
     } else {
         if (trim($_POST['inputFullName']) !== $user->user_fullname) {
@@ -50,23 +51,52 @@ if (isset($_POST['btnUpdate'])) {
         if (!empty($_FILES['profileImage']['name'])) {
             $profilePhotoName = $_FILES['profileImage']['name'];
             $target = "images/users/" . $profilePhotoName;
-            if (!file_exists($target)) {
-                move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
+            $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
+            // Check file size
+            if ($_FILES['profileImage']['size'] > 500000) {
+                $edit_errors .= "Sorry, your file is too large!<br>";
+                $css_class = "alert-danger";
+                $newProfilePhoto = $user->user_photo;
+            } // Allow certain file formats
+            else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif") {
+                $edit_errors .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed.<br>";
+                $css_class = "alert-danger";
+                $newProfilePhoto = $user->user_photo;
+            } else {
+                if (!file_exists($target)) {
+                    move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
+                }
+                $newProfilePhoto = $target;
             }
-            $newProfilePhoto = $target;
         } else {
             $newProfilePhoto = $user->user_photo;
         }
-        $newGroupId = $_POST['usersGroupsSelect'];
-        $newActive = $_POST['usersActiveSelect'];
+        if ($user->user_group_id == 1) {
+            $newGroupId = $_POST['usersGroupsSelect'];
+            $newActive = $_POST['usersActiveSelect'];
+        }
         //do the update in the DB
-        if ($users->Update($user->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto, $newGroupId, $newActive)) {
-            $edit_errors = "Update successfully!";
-            $css_class = "alert-success";
-            header("location:profile.php");
+        if ($user->user_group_id == 1) {
+            if ($users->UpdateByAdmins($user->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto, $newGroupId, $newActive)) {
+                $edit_success = "Update successfully!<br>";
+                $_SESSION["msg_error"] = $edit_errors;
+                $_SESSION["msg_success"] = $edit_success;
+                header("location:dashboard.php");
+            } else {
+                $edit_errors .= "No changes done!<br>";
+                $css_class = "alert-danger";
+            }
         } else {
-            $edit_errors = "Something went wrong!";
-            $css_class = "alert-danger";
+            if ($users->UpdateByUsers($user->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto)) {
+                $edit_success = "Update successfully!<br>";
+                $_SESSION["msg_error"] = $edit_errors;
+                $_SESSION["msg"] = $edit_success;
+                header("location:dashboard.php");
+            } else {
+                $edit_errors .= "No changes done!<br>";
+                $css_class = "alert-danger";
+            }
         }
     }
 }
@@ -74,6 +104,7 @@ include "includes/header.php";
 ?>
 <div class="container-fluid container-bg container-full-height">
     <div class="row">
+
         <?php include "includes/sidebar.php";?>
         <div class="col-lg-10 col-md-9 col-sm-8 col-xs-1">
             <div class="row edit-profile">
@@ -89,6 +120,11 @@ include "includes/header.php";
                                     <strong><?=$edit_errors;?></strong>
                                 </div>
                                 <?php endif;?>
+                                <?php if ($edit_success != ""): ?>
+                                <div class="alert alert-success" role="alert">
+                                    <strong><?=$edit_success;?></strong>
+                                </div>
+                                <?php endif;?>
                                 <div class="edit-profile-photo">
                                     <div class="form-group">
                                         <img src="<?php echo $user->user_photo; ?>" alt="" id="profilePhoto"
@@ -100,13 +136,14 @@ include "includes/header.php";
                                 <div class="form-group">
                                     <label for="fullNameInput">Full Name</label>
                                     <input type="text" class="form-control" id="fullNameInput" autocomplete="off"
-                                        autofocus name="inputFullName" value="<?php echo $user->user_fullname; ?>">
+                                        autofocus name="inputFullName"
+                                        value="<?php echo (isset($_POST["inputFullName"]) ? $_POST["inputFullName"] : $user->user_fullname); ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="emailInput">Email address</label>
                                     <input type="email" class="form-control" id="emailInput" autocomplete="off"
                                         name="inputEmail" aria-describedby="emailHelp"
-                                        value="<?php echo $user->user_email; ?>">
+                                        value="<?php echo (isset($_POST["inputEmail"]) ? $_POST["inputEmail"] : $user->user_email); ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="passInput">Password</label>
@@ -116,8 +153,9 @@ include "includes/header.php";
                                 <div class="form-group">
                                     <label for="usersGroupsSelect">Group</label>
                                     <select name="usersGroupsSelect" class="form-control">
-                                        <option value="<?php echo $user->user_group_id; ?>">
-                                            <?php echo $users->UsersGroupsByID($user->user_group_id)->group_name; ?>
+                                        <option
+                                            value="<?php echo (isset($_POST["usersGroupsSelect"]) ? $_POST["usersGroupsSelect"] : $user->user_group_id); ?>">
+                                            <?php echo $users->UsersGroupsByID(isset($_POST["usersGroupsSelect"]) ? $_POST["usersGroupsSelect"] : $user->user_group_id)->group_name; ?>
                                             (Now)
                                         </option>
                                         <?php foreach ($users_groups as $group): ;?>
@@ -129,8 +167,15 @@ include "includes/header.php";
                                 <div class="form-group">
                                     <label for="usersActiveSelect">Active</label>
                                     <select name="usersActiveSelect" class="form-control">
-                                        <option value="<?php echo $user->user_is_active; ?>">
-                                            <?php echo $user_active; ?>
+                                        <option
+                                            value="<?php echo (isset($_POST["usersActiveSelect"]) ? $_POST["usersActiveSelect"] : $user->user_is_active); ?>">
+                                            <?php
+if (isset($_POST["usersActiveSelect"]) && $_POST["usersActiveSelect"] == 1) {
+    $user_active = "YES";
+} else if (isset($_POST["usersActiveSelect"]) && $_POST["usersActiveSelect"] == 2) {
+    $user_active = "NO";
+}
+echo $user_active;?>
                                             (Now)
                                         </option>
                                         <option value="1">YES</option>
