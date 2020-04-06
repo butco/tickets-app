@@ -45,7 +45,7 @@ if (isset($_POST['btnLogin'])) {
                         <div class="form-group">
                             <label for="emailInput">Email address</label>
                             <input type="email" class="form-control" id="emailInput" autocomplete="off" autofocus
-                                name="inputEmail" aria-describedby="emailHelp" value="admin@ticketsapp.com">
+                                name="inputEmail" aria-describedby="emailHelp" value="">
                         </div>
                         <div class="form-group">
                             <label for="passInput">Password</label>

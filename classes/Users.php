@@ -82,20 +82,40 @@ class Users
     //User Details
     public function UserDetails($id)
     {
-        $sql = "SELECT * FROM users WHERE $id=:id";
+        $sql = "SELECT * FROM users WHERE id=:id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindparam(":id", $id);
-
         try {
             $stmt->execute();
-            if ($stmt->rowCount() > 0) {
+            if ($stmt->rowCount()) {
                 $result = $stmt->fetch(PDO::FETCH_OBJ);
                 return $result;
             }
         } catch (PDOException $e) {
             die($e->getMessage());
         }
+    }
 
+    //Check if user is administrator
+    public function UserIsAdmin($id)
+    {
+        $sql = "SELECT user_group_id FROM users WHERE id=:id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":id", $id);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount()) {
+                $result = $stmt->fetch(PDO::FETCH_OBJ);
+                if ($result->user_group_id == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
     }
 
     //User Groups

@@ -1,3 +1,9 @@
+<?php
+if (isset($_SESSION["userToEdit"])) {
+    $userToEdit = $users->UserDetails($_SESSION["userToEdit"]);
+}
+
+?>
 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-1 sidebar top-fixed">
     <div class="brand text-white text-center pb-3 mt-3">TicketsApp</div>
     <section class="profile">
@@ -25,7 +31,7 @@
             </ul>
         </div>
         <ul>
-            <li><a href="#">Users</a></li>
+            <li><a href="users.php">Users</a></li>
             <li><a href="#">Projects</a></li>
             <li><a href="#">Tickets</a></li>
         </ul>
