@@ -32,7 +32,7 @@ if (isset($_SESSION["userToEdit"])) {
         exit;
     }
 } else {
-    $userToEdit = $users->UserDetails($_SESSION["user_id"]);
+    $userToEdit = $user;
 }
 
 //check if user is active
@@ -90,6 +90,7 @@ if (isset($_POST['btnUpdate'])) {
             $newGroupId = $_POST['usersGroupsSelect'];
             $newActive = $_POST['usersActiveSelect'];
         }
+
         //do the update in the DB
         if ($user->user_group_id == 1) {
             if ($users->UpdateByAdmins($userToEdit->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto, $newGroupId, $newActive)) {
@@ -112,9 +113,8 @@ if (isset($_POST['btnUpdate'])) {
             }
         }
     }
-} else {
-    unset($_SESSION["userToEdit"]);
 }
+
 include "includes/header.php";
 ?>
 <div class="container-fluid container-bg container-full-height">
@@ -142,8 +142,8 @@ include "includes/header.php";
                                 <?php endif;?>
                                 <div class="edit-profile-photo">
                                     <div class="form-group">
-                                        <img src="<?php echo $userToEdit->user_photo; ?>" alt="" id="profilePhoto"
-                                            class="card-img-top mb-3" onclick="triggerClick()">
+                                        <img src="<?php echo (isset($_POST["profileImage"]) ? $_POST["profileImage"] : $userToEdit->user_photo); ?>"
+                                            alt="" id="profilePhoto" class="card-img-top mb-3" onclick="triggerClick()">
                                         <input type="file" name="profileImage" onchange="previewProfilePhoto(this)"
                                             id="profileImage" style="display:none;">
                                     </div>

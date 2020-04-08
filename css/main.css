@@ -9,6 +9,15 @@ button {
   background: linear-gradient(37deg, #360058, #a27dd1);
 }
 
+.page-title {
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom: 1.5px groove rgba(255, 255, 255, 0.6);
+  padding: 15px;
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
 .copyright {
   text-align: center;
 }
@@ -161,5 +170,121 @@ button {
   height: 200px;
   border-radius: 50%;
   border: 5px solid rgba(0, 0, 0, 0.2);
+}
+
+.row-users {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.row-users .act-users,
+.row-users .inact-users {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.row-users .act-users .users-add-new-link,
+.row-users .act-users .active-user-link,
+.row-users .act-users .inactive-user-link,
+.row-users .inact-users .users-add-new-link,
+.row-users .inact-users .active-user-link,
+.row-users .inact-users .inactive-user-link {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 20px 5px;
+}
+
+.row-users .act-users .users-add-new-link:hover,
+.row-users .act-users .active-user-link:hover,
+.row-users .act-users .inactive-user-link:hover,
+.row-users .inact-users .users-add-new-link:hover,
+.row-users .inact-users .active-user-link:hover,
+.row-users .inact-users .inactive-user-link:hover {
+  color: black;
+}
+
+.row-users .act-users .card,
+.row-users .inact-users .card {
+  width: 200px;
+  height: 200px;
+}
+
+.row-users .act-users .card.add-new,
+.row-users .inact-users .card.add-new {
+  background-color: #ededed;
+}
+
+.row-users .act-users .card.add-new .card-body,
+.row-users .inact-users .card.add-new .card-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.row-users .act-users .card.add-new .card-body i,
+.row-users .inact-users .card.add-new .card-body i {
+  font-size: 60px;
+}
+
+.row-users .act-users .card.add-new .card-body p,
+.row-users .inact-users .card.add-new .card-body p {
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.row-users .act-users .card.active-user,
+.row-users .act-users .card.inactive-user,
+.row-users .inact-users .card.active-user,
+.row-users .inact-users .card.inactive-user {
+  background-color: #fefefe;
+}
+
+.row-users .act-users .card.active-user .card-body,
+.row-users .act-users .card.inactive-user .card-body,
+.row-users .inact-users .card.active-user .card-body,
+.row-users .inact-users .card.inactive-user .card-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.row-users .act-users .card.active-user .card-body img,
+.row-users .act-users .card.inactive-user .card-body img,
+.row-users .inact-users .card.active-user .card-body img,
+.row-users .inact-users .card.inactive-user .card-body img {
+  width: 90%;
+  height: 90%;
+  border: 3px solid rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
 }
 /*# sourceMappingURL=main.css.map */

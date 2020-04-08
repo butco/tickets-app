@@ -10,6 +10,15 @@ button {
   background: linear-gradient(37deg, $theme-color-dark, $theme-color-light);
 }
 
+.page-title {
+  color: $title-text-color;
+  border-bottom: $title-hr;
+  padding: 15px;
+  font-size: $title-font-size;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
 .copyright {
   text-align: center;
   .copy-link {
@@ -190,5 +199,70 @@ button {
         border: 5px solid $profile-photo-border-color;
       }
     }
+  }
+}
+
+// ***** Users.php *****
+.row-users {
+  display: flex;
+  flex-direction: column;
+  .act-users,
+  .inact-users {
+    display: flex;
+    flex-wrap: wrap;
+    .users-add-new-link,
+    .active-user-link,
+    .inactive-user-link {
+      text-decoration: none;
+      color: $users-card-text-color;
+      margin: 20px 5px;
+    }
+    .users-add-new-link:hover,
+    .active-user-link:hover,
+    .inactive-user-link:hover {
+      color: $users-card-text-color-hover;
+    }
+    .card {
+      width: 200px;
+      height: 200px;
+    }
+    .card.add-new {
+      background-color: #ededed;
+      .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        i {
+          font-size: 60px;
+        }
+        p {
+          text-transform: uppercase;
+          font-weight: 300;
+          font-size: 14px;
+          margin-top: 10px;
+        }
+      }
+    }
+    .card.active-user,
+    .card.inactive-user {
+      // margin: 0;
+      // padding: 0;
+      background-color: $card-bg-color;
+      .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 90%;
+          height: 90%;
+          border: 3px solid rgba(0, 0, 0, 0.5);
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+  .inact-users {
   }
 }

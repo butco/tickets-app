@@ -79,6 +79,22 @@ class Users
         }
     }
 
+    //Get all users
+    public function GetAllUsers($whereClause, $whereClauseValue)
+    {
+        $sql = "SELECT * FROM users WHERE " . $whereClause . "=" . $whereClauseValue;
+        $stmt = $this->db->prepare($sql);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount()) {
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                return $result;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
     //User Details
     public function UserDetails($id)
     {
