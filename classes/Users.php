@@ -175,6 +175,30 @@ class Users
         $this->logged_out_redirect();
     }
 
+    //Add New User
+    //Update Details by Admins
+    public function AddUser($email, $password, $fullName, $photo, $group, $active)
+    {
+        $sql = "INSERT INTO users(user_email,user_password,user_fullname,user_photo,user_group_id,user_is_active) VALUES(:email,:pass,:fullname,:photo,:group_id,:active)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":email", $email);
+        $stmt->bindparam(":pass", $password);
+        $stmt->bindparam(":fullname", $fullName);
+        $stmt->bindparam(":photo", $photo);
+        $stmt->bindparam(":group_id", $group);
+        $stmt->bindparam(":active", $active);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
     //Update Details by Admins
     public function UpdateByAdmins($id, $email, $password, $fullName, $photo, $group, $active)
     {

@@ -263,6 +263,29 @@ button {
       }
     }
   }
-  .inact-users {
+  // .inact-users {
+  // }
+}
+
+//Add-User.php
+// ***** Profile.php *****
+.add-user {
+  margin: 30px;
+
+  &-card {
+    background-color: $card-bg-color;
+    filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+  }
+  .card-body {
+    .add-user-photo {
+      width: 100%;
+      text-align: center;
+      img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 5px solid $profile-photo-border-color;
+      }
+    }
   }
 }

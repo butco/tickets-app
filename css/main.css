@@ -287,4 +287,26 @@ button {
   border: 3px solid rgba(0, 0, 0, 0.5);
   border-radius: 50%;
 }
+
+.add-user {
+  margin: 30px;
+}
+
+.add-user-card {
+  background-color: #fefefe;
+  -webkit-filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+          filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+}
+
+.add-user .card-body .add-user-photo {
+  width: 100%;
+  text-align: center;
+}
+
+.add-user .card-body .add-user-photo img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid rgba(0, 0, 0, 0.2);
+}
 /*# sourceMappingURL=main.css.map */
