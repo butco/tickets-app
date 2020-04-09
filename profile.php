@@ -18,11 +18,12 @@ $newActive = "";
 $user = $users->UserDetails($_SESSION["user_id"]);
 if (isset($_GET["profile"]) && !empty($_GET["profile"])) {
     $_SESSION["userToEdit"] = $_GET["profile"];
+    $_SESSION["userToDelete"] = $_GET["profile"];
 }
 //if user is admin then has right to update any user
 //if user is not admin then has right to update only own details
 if (isset($_SESSION["userToEdit"])) {
-    if ($users->UserIsAdmin($_SESSION["user_id"])) {
+    if (($users->UserIsAdmin($_SESSION["user_id"])) || ($_SESSION["user_id"] == $user->id)) {
         $userToEdit = $users->UserDetails($_SESSION["userToEdit"]);
     } else {
         // $userToEdit = $users->UserDetails($_SESSION["user_id"]);
@@ -115,6 +116,18 @@ if (isset($_POST['btnUpdate'])) {
     }
 }
 
+//DELETE button is pressed
+if (isset($_POST["btnDelete"])) {
+    $userToDelete = $users->UserDetails($_SESSION["userToDelete"]);
+    // echo "Delete: " . $_SESSION["userToDelete"];
+    if ($users->DeleteUser($userToDelete->id)) {
+        $_SESSION["msg_success"] = "The user <strong>" . $userToDelete->user_fullname . "</strong> was deleted!";
+    } else {
+        $_SESSION["msg_error"] = "The user <strong>" . $userToDelete->user_fullname . "</strong> was not deleted!";
+    }
+    header("location:users.php");
+}
+
 include "includes/header.php";
 ?>
 <div class="container-fluid container-bg container-full-height">
@@ -198,9 +211,14 @@ echo $user_active;?>
                                     </select>
                                 </div>
                                 <?php endif;?>
-
-                                <button type="submit" class="btn btn-secondary btn-block btn-login"
-                                    name="btnUpdate">UPDATE</button>
+                                <div class="buttons">
+                                    <button type="submit" class="btn btn-secondary btn-block btn-update"
+                                        name="btnUpdate">UPDATE</button>
+                                    <?php if ($user->user_group_id == 1 && $userToEdit->id !== $user->id): ?>
+                                    <button type="submit" class="btn btn-secondary btn-block btn-delete"
+                                        name="btnDelete">DELETE</button>
+                                    <?php endif;?>
+                                </div>
                                 <div class="copyright">2020 &copy; <a href="https://www.ButcoSoft.com"
                                         class="copy-link">ButcoSoft</a>. All
                                     rights reserved.</div>

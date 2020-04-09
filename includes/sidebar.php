@@ -1,9 +1,3 @@
-<?php
-if (isset($_SESSION["userToEdit"])) {
-    $userToEdit = $users->UserDetails($_SESSION["userToEdit"]);
-}
-
-?>
 <div class="col-lg-2 col-md-3 col-sm-4 col-xs-1 sidebar top-fixed">
     <div class="brand text-white text-center pb-3 mt-3">TicketsApp</div>
     <section class="profile">
@@ -15,7 +9,7 @@ if (isset($_SESSION["userToEdit"])) {
         <div class="profile-links">
             <ul>
                 <li><a href="dashboard.php">Dashboard</a></li>
-                <li><a href="profile.php">Profile</a></li>
+                <li><a href="profile.php?profile=<?php echo $user->id; ?>">Profile</a></li>
                 <li><a href="#">My Projects</a></li>
                 <li><a href="#">My Tickets</a></li>
                 <li><a href="logout.php" class="btn btn-danger mt-3">Logout</a></li>

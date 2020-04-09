@@ -288,6 +288,33 @@ button {
   border-radius: 50%;
 }
 
+.row-users .act-users .card.active-user:hover,
+.row-users .act-users .card.inactive-user:hover,
+.row-users .inact-users .card.active-user:hover,
+.row-users .inact-users .card.inactive-user:hover {
+  background-color: #f1f1f1;
+  -webkit-transition: -webkit-filter ease-in 0.2s;
+  transition: -webkit-filter ease-in 0.2s;
+  transition: filter ease-in 0.2s;
+  transition: filter ease-in 0.2s, -webkit-filter ease-in 0.2s;
+  -webkit-filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
+          filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
+}
+
+.row-users .inact-users .card-body img {
+  -webkit-filter: grayscale(100%);
+          filter: grayscale(100%);
+}
+
+.row-users .inact-users .card-body:hover img {
+  -webkit-transition: -webkit-filter ease-in-out 0.1s;
+  transition: -webkit-filter ease-in-out 0.1s;
+  transition: filter ease-in-out 0.1s;
+  transition: filter ease-in-out 0.1s, -webkit-filter ease-in-out 0.1s;
+  -webkit-filter: grayscale(0%);
+          filter: grayscale(0%);
+}
+
 .add-user {
   margin: 30px;
 }

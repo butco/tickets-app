@@ -199,6 +199,16 @@ button {
         border: 5px solid $profile-photo-border-color;
       }
     }
+    // .buttons {
+    //   display: flex;
+    //   flex-wrap: wrap;
+    //   .btn-delete {
+    //     width: 100%;
+    //   }
+    //   .btn-update {
+    //     width: 100%;
+    //   }
+    // }
   }
 }
 
@@ -261,10 +271,26 @@ button {
           border-radius: 50%;
         }
       }
+      &:hover {
+        background-color: darken($card-bg-color, 5);
+        transition: filter ease-in 0.2s;
+        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
+      }
     }
   }
-  // .inact-users {
-  // }
+  .inact-users {
+    .card-body {
+      img {
+        filter: grayscale(100%);
+      }
+      &:hover {
+        img {
+          transition: filter ease-in-out 0.1s;
+          filter: grayscale(0%);
+        }
+      }
+    }
+  }
 }
 
 //Add-User.php

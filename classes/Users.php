@@ -199,6 +199,24 @@ class Users
         }
     }
 
+    //Delete User by ID
+    public function DeleteUser($id)
+    {
+        $sql = "DELETE FROM users WHERE id=:id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":id", $id);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
     //Update Details by Admins
     public function UpdateByAdmins($id, $email, $password, $fullName, $photo, $group, $active)
     {
