@@ -10,7 +10,7 @@
             <ul>
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <li><a href="profile.php?profile=<?php echo $user->id; ?>">Profile</a></li>
-                <li><a href="#">My Projects</a></li>
+                <li><a href="my-projects.php">My Projects</a></li>
                 <li><a href="#">My Tickets</a></li>
                 <li><a href="logout.php" class="btn btn-danger mt-3">Logout</a></li>
             </ul>

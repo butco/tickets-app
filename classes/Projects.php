@@ -103,12 +103,29 @@ class Projects
     //See all users UNassigned on one project
     public function GetUnassignedUsers($projId)
     {
-        $sql = "select u.* from users u where u.id not in (select uop.user_id from users_on_projects uop,projects p where uop.project_id = p.id AND p.id = :projId)";
+        $sql = "select u.* from users u where u.id not in (select uop.user_id from users_on_projects uop,projects p where uop.project_id = p.id AND p.id = :projId) AND u.user_is_active=1";
         $stmt = $this->db->prepare($sql);
         $stmt->bindparam(":projId", $projId);
         try {
             $stmt->execute();
             if ($stmt->rowCount() > 0) {
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                return $result;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    //See projects user is assigned on
+    public function GetProjectsByUser($userId)
+    {
+        $sql = "SELECT p.* FROM projects p,users_on_projects uop WHERE p.id = uop.project_id AND uop.user_id = :userId";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":userId", $userId);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount()) {
                 $result = $stmt->fetchAll(PDO::FETCH_OBJ);
                 return $result;
             }

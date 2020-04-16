@@ -166,7 +166,7 @@ include "includes/header.php";
                                     <div class="form-group">
                                         <label for="projNameInput">Project Name</label>
                                         <input type="text" class="form-control" id="projNameInput" autocomplete="off"
-                                            autofocus name="inputProjName"
+                                            name="inputProjName"
                                             value="<?php echo (isset($_POST["inputProjName"]) ? $_POST["inputProjName"] : $project->proj_name); ?>">
                                     </div>
                                     <div class="form-group">
