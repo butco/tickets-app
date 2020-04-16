@@ -26,7 +26,7 @@
         </div>
         <ul>
             <li><a href="users.php">Users</a></li>
-            <li><a href="#">Projects</a></li>
+            <li><a href="projects.php">Projects</a></li>
             <li><a href="#">Tickets</a></li>
         </ul>
     </section>

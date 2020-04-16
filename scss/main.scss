@@ -227,17 +227,22 @@ button {
       color: $users-card-text-color;
       margin: 20px 5px;
     }
-    .users-add-new-link:hover,
-    .active-user-link:hover,
-    .inactive-user-link:hover {
-      color: $users-card-text-color-hover;
-    }
+    // .users-add-new-link:hover,
+    // .active-user-link:hover,
+    // .inactive-user-link:hover {
+    // }
     .card {
       width: 200px;
       height: 200px;
+      background-color: $card-bg-color;
+      &:hover {
+        background-color: darken($card-bg-color, 5);
+        color: $users-card-text-color-hover;
+        transition: filter ease-in 0.2s;
+        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
+      }
     }
     .card.add-new {
-      background-color: #ededed;
       .card-body {
         display: flex;
         flex-direction: column;
@@ -258,7 +263,6 @@ button {
     .card.inactive-user {
       // margin: 0;
       // padding: 0;
-      background-color: $card-bg-color;
       .card-body {
         display: flex;
         flex-direction: column;
@@ -270,11 +274,6 @@ button {
           border: 3px solid rgba(0, 0, 0, 0.5);
           border-radius: 50%;
         }
-      }
-      &:hover {
-        background-color: darken($card-bg-color, 5);
-        transition: filter ease-in 0.2s;
-        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
       }
     }
   }
@@ -293,8 +292,7 @@ button {
   }
 }
 
-//Add-User.php
-// ***** Profile.php *****
+// ***** Add-User.php *****
 .add-user {
   margin: 30px;
 
@@ -304,6 +302,174 @@ button {
   }
   .card-body {
     .add-user-photo {
+      width: 100%;
+      text-align: center;
+      img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 5px solid $profile-photo-border-color;
+      }
+    }
+  }
+}
+
+// ***** Projects.php *****
+.row-projects {
+  display: flex;
+  .card {
+    width: 200px;
+    height: 200px;
+    color: $users-card-text-color;
+    &:hover {
+      background-color: darken($card-bg-color, 5);
+      color: $users-card-text-color-hover;
+      transition: filter ease-in 0.2s;
+      filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
+    }
+  }
+  .card.projects-add-new {
+    text-decoration: none;
+    margin: 20px 5px;
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      i {
+        font-size: 60px;
+      }
+      p {
+        text-transform: uppercase;
+        font-weight: 300;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .card.projects {
+    text-decoration: none;
+    margin: 20px 5px;
+    background-color: $card-bg-color;
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 80%;
+        height: 80%;
+        border: 3px solid rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+      }
+    }
+  }
+}
+// *****
+
+// ***** Project.php *****
+.card.card-assigned-users {
+  margin-top: 5px;
+  .card {
+    width: 150px;
+    height: 150px;
+    color: $users-card-text-color;
+    border: none;
+  }
+  .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .card.users {
+      margin: 0 3px;
+      background-color: $card-bg-color;
+      .card-body {
+        position: relative;
+        a {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          color: $users-card-text-color-hover;
+          text-decoration: none;
+        }
+        .overlay {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          opacity: 0;
+          z-index: 1;
+          i.unassign-user:hover {
+            color: red;
+          }
+          i.assign-user:hover {
+            color: green;
+          }
+        }
+        img {
+          width: 90%;
+          height: 90%;
+          border: 3px solid rgba(0, 0, 0, 0.5);
+          border-radius: 50%;
+        }
+        &:hover {
+          background-color: darken($card-bg-color, 5);
+          color: $users-card-text-color-hover;
+          transition: filter ease-in 0.2s;
+          filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.6));
+          img {
+            opacity: 0.5;
+          }
+          .overlay {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
+.project-details-card {
+  margin-top: 5px;
+  form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    justify-items: center;
+
+    .project-logo {
+      img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 5px solid $profile-photo-border-color;
+      }
+    }
+    .proj-inputs {
+      width: 100%;
+    }
+  }
+  @media only screen and (max-width: 800px) {
+    form {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// ***** Add-Project.php *****
+.add-project {
+  margin: 30px;
+
+  &-card {
+    background-color: $card-bg-color;
+    filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+  }
+  .card-body {
+    .add-project-logo {
       width: 100%;
       text-align: center;
       img {
