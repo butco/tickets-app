@@ -10,8 +10,22 @@ $profilePhoto = "images/projects/project_placeholder.png";
 //Save all user details into $user object
 $user = $users->UserDetails($_SESSION['user_id']);
 $project = $projects->ProjectDetails($_GET["proj_id"]);
+//show only OPEN and IN_PROGRESS tickets
+$statuses = array('status' => "'OPEN', 'IN_PROGRESS'");
+$allTickets = $tickets->GetAllProjectsTickets($project->id, $statuses['status']);
+//
 $usersOnProject = $projects->GetAssignedUsers($project->id);
 $unassignedUsers = $projects->GetUnassignedUsers($project->id);
+
+//Delete ticket
+if (isset($_GET["del_ticket"]) && !empty($_GET["del_ticket"])) {
+    if ($tickets->DeleteTicket($_GET["del_ticket"])) {
+        $edit_success = "Ticket deleted successfully!";
+        header("location:project.php?proj_id=" . $project->id);
+    } else {
+        $edit_errors = "Couldn't delete the ticket!";
+    }
+}
 
 //Assign user to project
 if (isset($_GET["assign"]) && !empty($_GET["assign"])) {
@@ -98,7 +112,51 @@ include "includes/header.php";
                 <strong><?=$edit_success;?></strong>
             </div>
             <?php endif;?>
-            <div class="row add-project">
+            <div class="row tickets">
+                <div class="col-12 m-auto">
+                    <div class="card">
+                        <div class="card-title text-center mt-3 mb-0">
+                            <h4>Tickets</h4>
+                        </div>
+                        <div class="card-body">
+                            <a href="add-ticket.php?proj_id=<?php echo $project->id; ?>" class="btn-new-ticket"><i
+                                    class="far fa-plus-square"></i> New Ticket</a>
+                            <div class="table-responsive-xl">
+                                <table class="table table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Actions</th>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($allTickets as $ticket): ?>
+                                        <tr
+                                            class="<?php echo ($ticket->status == "IN_PROGRESS") ? "table-success" : ""; ?>">
+                                            <td><a href="ticket.php?id=<?php echo $ticket->id; ?>"
+                                                    class="ticket-actions"><i class="far fa-eye view-ticket"></i></a><a
+                                                    href="project.php?proj_id=<?php echo $ticket->project_id; ?>&del_ticket=<?php echo $ticket->id; ?>"
+                                                    class="ticket-actions"><i
+                                                        class="far fa-trash-alt delete-ticket"></i></a></td>
+                                            <td><?php echo $ticket->id; ?></td>
+                                            <td><?php echo $ticket->title; ?></td>
+                                            <td><?php echo $ticket->status; ?></td>
+                                            <td><?php echo $ticket->user_fullname; ?></td>
+                                            <td><?php echo $ticket->create_date; ?></td>
+                                        </tr>
+                                        <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row add-project mt-0">
                 <div class="col-12 m-auto">
                     <?php if (!empty($usersOnProject)): ?>
                     <div class="card card-assigned-users">

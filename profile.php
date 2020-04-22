@@ -4,8 +4,6 @@ require "config/init.php";
 //check if user is logged in. If not then redirect to index
 $users->logged_out_redirect();
 $user_active = "";
-$edit_errors = "";
-$edit_success = "";
 // $css_class = "";
 $profilePhotoName = "";
 $newEmail = "";
@@ -14,6 +12,7 @@ $newPassword = "";
 $newProfilePhoto = "";
 $newGroupId = "";
 $newActive = "";
+$photoOk = 1;
 //Save all user details into $user object
 $user = $users->UserDetails($_SESSION["user_id"]);
 if (isset($_GET["profile"]) && !empty($_GET["profile"])) {
@@ -27,7 +26,7 @@ if (isset($_SESSION["userToEdit"])) {
         $userToEdit = $users->UserDetails($_SESSION["userToEdit"]);
     } else {
         // $userToEdit = $users->UserDetails($_SESSION["user_id"]);
-        $edit_errors = "You are not allowed to update other\'s profile!";
+        $edit_errors = "You are not allowed to update other's profile!";
         $_SESSION["msg_error"] = $edit_errors;
         header("location:dashboard.php");
         exit;
@@ -46,9 +45,15 @@ $users_groups = $users->UsersGroups();
 
 //Update button is pressed
 if (isset($_POST['btnUpdate'])) {
+    unset($_SESSION["msg_success"]);
+    unset($_SESSION["msg_error"]);
+    $edit_errors = "";
+    $edit_success = "";
+    $photoOk = 1;
     //check if values changed
     if (empty($_POST['inputFullName']) || empty($_POST['inputEmail'])) {
         $edit_errors = "Please fill in your full name and email address!";
+        $_SESSION["msg_error"] = $edit_errors;
     } else {
         if (trim($_POST['inputFullName']) !== $userToEdit->user_fullname) {
             $newFullName = trim($_POST['inputFullName']);
@@ -69,22 +74,26 @@ if (isset($_POST['btnUpdate'])) {
             $profilePhotoName = $_FILES['profileImage']['name'];
             $target = "images/users/" . $profilePhotoName;
             $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
-            // Check file size
-            if ($_FILES['profileImage']['size'] > 500000) {
-                $edit_errors = "Sorry, your file is too large!";
+            if ($imageFileType !== "jpg" && $imageFileType !== "png" && $imageFileType !== "jpeg"
+                && $imageFileType !== "gif") {
+                $edit_errors .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed. ";
+                $_SESSION["msg_error"] = $edit_errors;
                 $newProfilePhoto = $userToEdit->user_photo;
-            } // Allow certain file formats
-            else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                && $imageFileType != "gif") {
-                $edit_errors = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            }
+            if (filesize($_FILES['profileImage']['tmp_name']) > 1000000) {
+                $edit_errors .= "Sorry, your file is too large! ";
+                $_SESSION["msg_error"] = $edit_errors;
                 $newProfilePhoto = $userToEdit->user_photo;
+            }
+            if (!file_exists($target) && empty($edit_errors)) {
+                move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
+                $newProfilePhoto = $target;
             } else {
-                if (!file_exists($target)) {
-                    move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
-                }
                 $newProfilePhoto = $target;
             }
+            //
         } else {
+            $_SESSION["msg_error"] = $edit_errors;
             $newProfilePhoto = $userToEdit->user_photo;
         }
         if ($user->user_group_id == 1) {
@@ -93,24 +102,21 @@ if (isset($_POST['btnUpdate'])) {
         }
 
         //do the update in the DB
-        if ($user->user_group_id == 1) {
-            if ($users->UpdateByAdmins($userToEdit->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto, $newGroupId, $newActive)) {
-                $edit_success = "Update successfully!";
-                $_SESSION["msg_error"] = $edit_errors;
-                $_SESSION["msg_success"] = $edit_success;
-                header("location:dashboard.php");
+        if (empty($_SESSION["msg_error"])) {
+            if ($user->user_group_id == 1) {
+                if ($users->UpdateByAdmins($userToEdit->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto, $newGroupId, $newActive)) {
+                    $edit_success = "Update successfully!";
+                    // $_SESSION["msg_error"] = $edit_errors;
+                    $_SESSION["msg_success"] = $edit_success;
+                    header("location:profile.php?profile=" . $userToEdit->id);
+                }
+                // unset($_SESSION["userToEdit"]);
             } else {
-                $edit_errors = "No changes done!";
-            }
-            unset($_SESSION["userToEdit"]);
-        } else {
-            if ($users->UpdateByUsers($userToEdit->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto)) {
-                $edit_success = "Update successfully!";
-                $_SESSION["msg_error"] = $edit_errors;
-                $_SESSION["msg_success"] = $edit_success;
-                header("location:dashboard.php");
-            } else {
-                $edit_errors = "No changes done!";
+                if ($users->UpdateByUsers($userToEdit->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto)) {
+                    $edit_success = "Update successfully!";
+                    $_SESSION["msg_success"] = $edit_success;
+                    header("location:profile.php?profile=" . $userToEdit->id);
+                }
             }
         }
     }
@@ -132,7 +138,6 @@ include "includes/header.php";
 ?>
 <div class="container-fluid container-bg container-full-height">
     <div class="row">
-
         <?php include "includes/sidebar.php";?>
         <div class="col-lg-10 col-md-9 col-sm-8 col-xs-1">
             <div class="row edit-profile">
@@ -142,17 +147,18 @@ include "includes/header.php";
                             <h3>Update Details</h3>
                         </div>
                         <div class="card-body">
-                            <form action="profile.php" method="POST" enctype="multipart/form-data">
-                                <?php if ($edit_errors != ""): ?>
-                                <div class="alert alert-danger" role="alert">
-                                    <strong><?=$edit_errors;?></strong>
-                                </div>
-                                <?php endif;?>
-                                <?php if ($edit_success != ""): ?>
-                                <div class="alert alert-success" role="alert">
-                                    <strong><?=$edit_success;?></strong>
-                                </div>
-                                <?php endif;?>
+                            <?php if (isset($_SESSION["msg_error"]) && !empty($_SESSION["msg_error"])): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <strong><?php echo $_SESSION["msg_error"];unset($_SESSION["msg_error"]); ?></strong>
+                            </div>
+                            <?php endif;?>
+                            <?php if (isset($_SESSION["msg_success"]) && !empty($_SESSION["msg_success"])): ?>
+                            <div class="alert alert-success" role="alert">
+                                <strong><?php echo $_SESSION["msg_success"]; ?></strong>
+                            </div>
+                            <?php endif;?>
+                            <form action="profile.php?profile=<?php echo $userToEdit->id; ?>" method="POST"
+                                enctype="multipart/form-data">
                                 <div class="edit-profile-photo">
                                     <div class="form-group">
                                         <img src="<?php echo (isset($_POST["profileImage"]) ? $_POST["profileImage"] : $userToEdit->user_photo); ?>"

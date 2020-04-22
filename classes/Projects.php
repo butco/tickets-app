@@ -134,6 +134,25 @@ class Projects
         }
     }
 
+    //check if a user is assigned on a specific project
+    public function CheckUserAssignedOnProject($userId, $projId)
+    {
+        $sql = "SELECT * FROM users_on_projects WHERE user_id = :userId AND project_id=:projId";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":userId", $userId);
+        $stmt->bindparam(":projId", $projId);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount()) {
+                return $true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
     //See all projects
     public function GetAllProjects()
     {

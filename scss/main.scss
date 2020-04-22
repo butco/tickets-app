@@ -369,6 +369,29 @@ button {
 // *****
 
 // ***** Project.php *****
+.row.tickets {
+  margin: 30px 30px 0 30px;
+  .btn-new-ticket {
+    text-decoration: none;
+    color: $users-card-text-color;
+    padding: 5px 5px;
+    font-weight: bold;
+    &:hover {
+      color: #000;
+    }
+  }
+  .ticket-actions {
+    text-decoration: none;
+    color: $users-card-text-color;
+    margin: 0 5px;
+    .view-ticket:hover {
+      color: blue;
+    }
+    .delete-ticket:hover {
+      color: red;
+    }
+  }
+}
 .card.card-assigned-users {
   margin-top: 5px;
   .card {
