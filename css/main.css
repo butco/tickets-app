@@ -418,11 +418,19 @@ button {
 .row.tickets .ticket-actions {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.6);
-  margin: 0 5px;
+  margin: 0 2px;
+}
+
+.row.tickets .ticket-actions .start-ticket:hover {
+  color: green;
+}
+
+.row.tickets .ticket-actions .close-ticket:hover {
+  color: red;
 }
 
 .row.tickets .ticket-actions .view-ticket:hover {
-  color: blue;
+  color: #a07eca;
 }
 
 .row.tickets .ticket-actions .delete-ticket:hover {

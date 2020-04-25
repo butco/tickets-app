@@ -30,21 +30,21 @@ if (isset($_POST['btnAdd'])) {
             $profilePhotoName = $_FILES['profileImage']['name'];
             $target = "images/users/" . $profilePhotoName;
             $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
-            // Check file size
-            if ($_FILES['profileImage']['size'] > 500000) {
-                $add_errors = "Sorry, your file is too large!";
-                // $profilePhoto = "";
-            } // Allow certain file formats
-            else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            // Allow certain file formats
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
                 && $imageFileType != "gif") {
-                $add_errors = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                $add_errors .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed. ";
                 // $profilePhoto = "";
-            } else {
-                if (!file_exists($target)) {
-                    move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
-                }
-                $profilePhoto = $target;
             }
+            // Check file size
+            if (filesize($_FILES['profileImage']['tmp_name']) > 1000000) {
+                $add_errors .= "Sorry, your file is too large! ";
+                // $profilePhoto = "";
+            }
+            if (!file_exists($target) && empty($add_errors)) {
+                move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
+            }
+            $profilePhoto = $target;
         }
         // else {
         //     //if the admin doesn't upload a photo
@@ -56,11 +56,10 @@ if (isset($_POST['btnAdd'])) {
         $active = $_POST['usersActiveSelect'];
 
         //do the insert in the DB
-        if ($users->AddUser($email, $password, $fullName, $profilePhoto, $groupId, $active)) {
-            $add_success = "User was created successfully!";
-            $_SESSION["msg_error"] = $add_errors;
-            $_SESSION["msg_success"] = $add_success;
-            header("location:users.php");
+        if (empty($add_errors)) {
+            if ($users->AddUser($email, $password, $fullName, $profilePhoto, $groupId, $active)) {
+                header("location:users.php");
+            }
         }
     }
 }

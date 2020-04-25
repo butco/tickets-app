@@ -17,6 +17,26 @@ $allTickets = $tickets->GetAllProjectsTickets($project->id, $statuses['status'])
 $usersOnProject = $projects->GetAssignedUsers($project->id);
 $unassignedUsers = $projects->GetUnassignedUsers($project->id);
 
+//Start ticket
+if (isset($_GET["start_ticket"]) && !empty($_GET["start_ticket"])) {
+    if ($tickets->StartTicket($_GET["start_ticket"])) {
+        $edit_success = "Ticket started successfully!";
+        header("location:project.php?proj_id=" . $project->id);
+    } else {
+        $edit_errors = "Couldn't start the ticket!";
+    }
+}
+
+//Close ticket
+if (isset($_GET["close_ticket"]) && !empty($_GET["close_ticket"])) {
+    if ($tickets->CloseTicket($_GET["close_ticket"])) {
+        $edit_success = "Ticket closed successfully!";
+        header("location:project.php?proj_id=" . $project->id);
+    } else {
+        $edit_errors = "Couldn't close the ticket!";
+    }
+}
+
 //Delete ticket
 if (isset($_GET["del_ticket"]) && !empty($_GET["del_ticket"])) {
     if ($tickets->DeleteTicket($_GET["del_ticket"])) {
@@ -131,22 +151,35 @@ include "includes/header.php";
                                             <th scope="col">Status</th>
                                             <th scope="col">User</th>
                                             <th scope="col">Created At</th>
+                                            <th scope="col">Started At</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php foreach ($allTickets as $ticket): ?>
                                         <tr
                                             class="<?php echo ($ticket->status == "IN_PROGRESS") ? "table-success" : ""; ?>">
-                                            <td><a href="ticket.php?id=<?php echo $ticket->id; ?>"
-                                                    class="ticket-actions"><i class="far fa-eye view-ticket"></i></a><a
+                                            <td>
+                                                <?php if ($ticket->status == "OPEN"): ?>
+                                                <a href="project.php?proj_id=<?php echo $ticket->project_id; ?>&start_ticket=<?php echo $ticket->id; ?>"
+                                                    class="ticket-actions"><i class="fas fa-play start-ticket"></i></a>
+                                                <?php elseif ($ticket->status == "IN_PROGRESS"): ?>
+                                                <a href="project.php?proj_id=<?php echo $ticket->project_id; ?>&close_ticket=<?php echo $ticket->id; ?>"
+                                                    class="ticket-actions"><i class="fas fa-stop close-ticket"></i></a>
+                                                <?php endif;?>
+                                                <a href="ticket.php?id=<?php echo $ticket->id; ?>"
+                                                    class="ticket-actions"><i class="far fa-eye view-ticket"></i></a>
+                                                <?php if ($users->UserIsAdmin($user->id)): ?><a
                                                     href="project.php?proj_id=<?php echo $ticket->project_id; ?>&del_ticket=<?php echo $ticket->id; ?>"
                                                     class="ticket-actions"><i
-                                                        class="far fa-trash-alt delete-ticket"></i></a></td>
+                                                        class="far fa-trash-alt delete-ticket"></i></a><?php endif;?>
+                                            </td>
                                             <td><?php echo $ticket->id; ?></td>
                                             <td><?php echo $ticket->title; ?></td>
                                             <td><?php echo $ticket->status; ?></td>
                                             <td><?php echo $ticket->user_fullname; ?></td>
                                             <td><?php echo $ticket->create_date; ?></td>
+                                            <td><?php echo ($ticket->start_date !== $ticket->create_date) ? $ticket->start_date : ""; ?>
+                                            </td>
                                         </tr>
                                         <?php endforeach;?>
                                     </tbody>
@@ -156,6 +189,7 @@ include "includes/header.php";
                     </div>
                 </div>
             </div>
+
             <div class="row add-project mt-0">
                 <div class="col-12 m-auto">
                     <?php if (!empty($usersOnProject)): ?>
@@ -167,6 +201,7 @@ include "includes/header.php";
                             <?php foreach ($usersOnProject as $singleUser): ?>
                             <div class="card users">
                                 <div class="card-body">
+                                    <?php if ($users->UserIsAdmin($user->id)): ?>
                                     <a href="profile.php?profile=<?php echo $singleUser->id; ?>">
                                         <img src="<?php echo $singleUser->user_photo; ?>" alt="" srcset="">
                                         <div class="user-fullname"><?php echo $singleUser->user_fullname; ?></div>
@@ -176,12 +211,18 @@ include "includes/header.php";
                                             href="project.php?proj_id=<?php echo $project->id; ?>&unassign=<?php echo $singleUser->id; ?>"><i
                                                 class="fas fa-trash-alt unassign-user"></i></a>
                                     </div>
+                                    <?php else: ?>
+                                    <img src="<?php echo $singleUser->user_photo; ?>" alt="" srcset="">
+                                    <div class="user-fullname"><?php echo $singleUser->user_fullname; ?></div>
+                                    <?php endif;?>
+
                                 </div>
                             </div>
                             <?php endforeach;?>
                         </div>
                     </div>
                     <?php endif;?>
+                    <?php if ($users->UserIsAdmin($user->id)): ?>
                     <?php if (!empty($unassignedUsers)): ?>
                     <div class="card card-assigned-users">
                         <div class="card-title text-center mt-3 mb-0">
@@ -206,7 +247,9 @@ include "includes/header.php";
                         </div>
                     </div>
                     <?php endif;?>
+                    <?php endif;?>
                 </div>
+                <?php if ($users->UserIsAdmin($user->id)): ?>
                 <div class="col-12 m-auto">
                     <div class="card project-details-card">
                         <div class="card-body">
@@ -247,6 +290,7 @@ include "includes/header.php";
                         </div>
                     </div>
                 </div>
+                <?php endif;?>
             </div>
         </div>
     </div>

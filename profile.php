@@ -12,23 +12,26 @@ $newPassword = "";
 $newProfilePhoto = "";
 $newGroupId = "";
 $newActive = "";
-$photoOk = 1;
+$edit_errors = null;
+$edit_success = null;
 //Save all user details into $user object
 $user = $users->UserDetails($_SESSION["user_id"]);
+
 if (isset($_GET["profile"]) && !empty($_GET["profile"])) {
     $_SESSION["userToEdit"] = $_GET["profile"];
     $_SESSION["userToDelete"] = $_GET["profile"];
+
 }
 //if user is admin then has right to update any user
 //if user is not admin then has right to update only own details
 if (isset($_SESSION["userToEdit"])) {
-    if (($users->UserIsAdmin($_SESSION["user_id"])) || ($_SESSION["user_id"] == $user->id)) {
+    if (($users->UserIsAdmin($_SESSION["user_id"])) || ($_SESSION["userToEdit"] == $user->id)) {
         $userToEdit = $users->UserDetails($_SESSION["userToEdit"]);
     } else {
         // $userToEdit = $users->UserDetails($_SESSION["user_id"]);
         $edit_errors = "You are not allowed to update other's profile!";
         $_SESSION["msg_error"] = $edit_errors;
-        header("location:dashboard.php");
+        header("location:profile.php?profile=" . $user->id);
         exit;
     }
 } else {
@@ -45,11 +48,6 @@ $users_groups = $users->UsersGroups();
 
 //Update button is pressed
 if (isset($_POST['btnUpdate'])) {
-    unset($_SESSION["msg_success"]);
-    unset($_SESSION["msg_error"]);
-    $edit_errors = "";
-    $edit_success = "";
-    $photoOk = 1;
     //check if values changed
     if (empty($_POST['inputFullName']) || empty($_POST['inputEmail'])) {
         $edit_errors = "Please fill in your full name and email address!";
@@ -106,9 +104,9 @@ if (isset($_POST['btnUpdate'])) {
             if ($user->user_group_id == 1) {
                 if ($users->UpdateByAdmins($userToEdit->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto, $newGroupId, $newActive)) {
                     $edit_success = "Update successfully!";
-                    // $_SESSION["msg_error"] = $edit_errors;
                     $_SESSION["msg_success"] = $edit_success;
                     header("location:profile.php?profile=" . $userToEdit->id);
+                    exit;
                 }
                 // unset($_SESSION["userToEdit"]);
             } else {
@@ -116,6 +114,7 @@ if (isset($_POST['btnUpdate'])) {
                     $edit_success = "Update successfully!";
                     $_SESSION["msg_success"] = $edit_success;
                     header("location:profile.php?profile=" . $userToEdit->id);
+                    exit;
                 }
             }
         }
@@ -154,7 +153,7 @@ include "includes/header.php";
                             <?php endif;?>
                             <?php if (isset($_SESSION["msg_success"]) && !empty($_SESSION["msg_success"])): ?>
                             <div class="alert alert-success" role="alert">
-                                <strong><?php echo $_SESSION["msg_success"]; ?></strong>
+                                <strong><?php echo $_SESSION["msg_success"];unset($_SESSION["msg_success"]); ?></strong>
                             </div>
                             <?php endif;?>
                             <form action="profile.php?profile=<?php echo $userToEdit->id; ?>" method="POST"

@@ -88,6 +88,43 @@ class Tickets
         }
     }
 
+    //Start Ticket
+    public function StartTicket($id)
+    {
+        $sql = "UPDATE tickets SET status='IN_PROGRESS',start_date=CURRENT_TIMESTAMP WHERE id=:id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":id", $id);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    //Close Ticket
+    public function CloseTicket($id, $close_details)
+    {
+        $sql = "UPDATE tickets SET status='CLOSED',close_details=:close_details,close_date=" . date("Y-m-d H:i:s") . " WHERE id=:id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":id", $id);
+        $stmt->bindparam(":close_details", $close_details);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
     //Get all the project's tickets
     public function GetAllProjectsTickets($projId, $status)
     {

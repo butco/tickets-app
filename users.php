@@ -8,16 +8,6 @@ $allActiveUsers = $users->GetAllUsers("user_is_active", 1);
 $allInactiveUsers = $users->GetAllUsers("user_is_active", 2);
 include "includes/header.php";
 ?>
-<?php if (isset($_SESSION["msg_error"]) && !empty($_SESSION["msg_error"])): ?>
-<div class="alert alert-danger dashboard-alert" role="alert">
-    <?php echo $_SESSION["msg_error"];unset($_SESSION["msg_error"]); ?>
-</div>
-<?php endif;?>
-<?php if (isset($_SESSION["msg_success"]) && !empty($_SESSION["msg_success"])): ?>
-<div class="alert alert-success dashboard-alert" role="alert">
-    <?php echo $_SESSION["msg_success"];unset($_SESSION["msg_success"]); ?>
-</div>
-<?php endif;?>
 <div class="container-fluid container-bg container-full-height">
     <div class="row">
         <?php include "includes/sidebar.php";?>

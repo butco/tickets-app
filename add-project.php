@@ -3,8 +3,8 @@
 require "config/init.php";
 //check if user is logged in. If not then redirect to index
 $users->logged_out_redirect();
-$add_errors = "";
-$add_success = "";
+$add_errors = null;
+$add_success = null;
 $profilePhotoName = "";
 $profilePhoto = "images/projects/project_placeholder.png";
 //Save all user details into $user object
@@ -13,7 +13,8 @@ $user = $users->UserDetails($_SESSION['user_id']);
 //Add button is pressed
 if (isset($_POST['btnAdd'])) {
     if (empty($_POST['inputProjName']) || empty($_POST['inputCompany'])) {
-        $add_errors = "Please fill in all the fields!";
+        $add_errors .= "Please fill in all the fields!";
+        $_SESSION["msg_error"] = $add_errors;
     } else {
         $projName = trim($_POST['inputProjName']);
         $projCompany = trim($_POST['inputCompany']);
@@ -22,27 +23,29 @@ if (isset($_POST['btnAdd'])) {
             $profilePhotoName = $_FILES['profileImage']['name'];
             $target = "images/projects/" . $profilePhotoName;
             $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
-            // Check file size
-            if ($_FILES['profileImage']['size'] > 500000) {
-                $add_errors = "Sorry, your file is too large!";
-            } // Allow certain file formats
-            else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                && $imageFileType != "gif") {
-                $add_errors = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-            } else {
-                if (!file_exists($target)) {
-                    move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
-                }
-                $profilePhoto = $target;
+            if ($imageFileType !== "jpg" && $imageFileType !== "png" && $imageFileType !== "jpeg"
+                && $imageFileType !== "gif") {
+                $add_errors .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                $_SESSION["msg_error"] = $add_errors;
             }
+            if (filesize($_FILES['profileImage']['tmp_name']) > 1000000) {
+                $add_errors .= "Sorry, your file is too large!";
+                $_SESSION["msg_error"] = $add_errors;
+            }
+            if (!file_exists($target) && empty($add_errors)) {
+                move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
+            }
+            $profilePhoto = $target;
         }
 
         //do the insert in the DB
-        if ($projects->AddNew($projName, $projCompany, $profilePhoto)) {
-            $add_success = "Project was created successfully!";
-            $_SESSION["msg_error"] = $add_errors;
-            $_SESSION["msg_success"] = $add_success;
-            header("location:projects.php");
+        if (empty($_SESSION["msg_error"])) {
+            if ($projects->AddNew($projName, $projCompany, $profilePhoto)) {
+                $add_success = "Project was created successfully!";
+                $_SESSION["msg_error"] = $add_errors;
+                $_SESSION["msg_success"] = $add_success;
+                header("location:projects.php");
+            }
         }
     }
 }
@@ -61,14 +64,14 @@ include "includes/header.php";
                         </div>
                         <div class="card-body">
                             <form action="add-project.php" method="POST" enctype="multipart/form-data">
-                                <?php if ($add_errors != ""): ?>
+                                <?php if (isset($_SESSION["msg_error"]) && !empty($_SESSION["msg_error"])): ?>
                                 <div class="alert alert-danger" role="alert">
-                                    <strong><?=$add_errors;?></strong>
+                                    <strong><?php echo $_SESSION["msg_error"];unset($_SESSION["msg_error"]); ?></strong>
                                 </div>
                                 <?php endif;?>
-                                <?php if ($add_success != ""): ?>
+                                <?php if (isset($_SESSION["msg_success"]) && !empty($_SESSION["msg_success"])): ?>
                                 <div class="alert alert-success" role="alert">
-                                    <strong><?=$add_success;?></strong>
+                                    <strong><?php echo $_SESSION["msg_success"];unset($_SESSION["msg_success"]); ?></strong>
                                 </div>
                                 <?php endif;?>
                                 <div class="add-project-logo">

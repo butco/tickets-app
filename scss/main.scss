@@ -383,9 +383,15 @@ button {
   .ticket-actions {
     text-decoration: none;
     color: $users-card-text-color;
-    margin: 0 5px;
+    margin: 0 2px;
+    .start-ticket:hover {
+      color: green;
+    }
+    .close-ticket:hover {
+      color: red;
+    }
     .view-ticket:hover {
-      color: blue;
+      color: #a07eca;
     }
     .delete-ticket:hover {
       color: red;
