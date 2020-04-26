@@ -4,7 +4,6 @@ require "config/init.php";
 //check if user is logged in. If not then redirect to index
 $users->logged_out_redirect();
 $user_active = "";
-// $css_class = "";
 $profilePhotoName = "";
 $newEmail = "";
 $newFullName = "";
@@ -28,7 +27,6 @@ if (isset($_SESSION["userToEdit"])) {
     if (($users->UserIsAdmin($_SESSION["user_id"])) || ($_SESSION["userToEdit"] == $user->id)) {
         $userToEdit = $users->UserDetails($_SESSION["userToEdit"]);
     } else {
-        // $userToEdit = $users->UserDetails($_SESSION["user_id"]);
         $edit_errors = "You are not allowed to update other's profile!";
         $_SESSION["msg_error"] = $edit_errors;
         header("location:profile.php?profile=" . $user->id);
@@ -108,7 +106,6 @@ if (isset($_POST['btnUpdate'])) {
                     header("location:profile.php?profile=" . $userToEdit->id);
                     exit;
                 }
-                // unset($_SESSION["userToEdit"]);
             } else {
                 if ($users->UpdateByUsers($userToEdit->id, $newEmail, $newPassword, $newFullName, $newProfilePhoto)) {
                     $edit_success = "Update successfully!";
@@ -124,7 +121,6 @@ if (isset($_POST['btnUpdate'])) {
 //DELETE button is pressed
 if (isset($_POST["btnDelete"])) {
     $userToDelete = $users->UserDetails($_SESSION["userToDelete"]);
-    // echo "Delete: " . $_SESSION["userToDelete"];
     if ($users->DeleteUser($userToDelete->id)) {
         $_SESSION["msg_success"] = "The user <strong>" . $userToDelete->user_fullname . "</strong> was deleted!";
     } else {

@@ -9,7 +9,11 @@ $myProjects = $projects->GetProjectsByUser($user->id);
 
 include "includes/header.php";
 ?>
-
+<?php if (isset($_SESSION["edit_ticket_error"]) && !empty($_SESSION["edit_ticket_error"])): ?>
+<div class="alert alert-danger dashboard-alert" role="alert">
+    <?php echo $_SESSION["edit_ticket_error"];unset($_SESSION["edit_ticket_error"]); ?>
+</div>
+<?php endif;?>
 <div class="container-fluid container-bg container-full-height">
     <div class="row">
         <?php include "includes/sidebar.php";?>

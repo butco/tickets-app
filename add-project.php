@@ -42,9 +42,9 @@ if (isset($_POST['btnAdd'])) {
         if (empty($_SESSION["msg_error"])) {
             if ($projects->AddNew($projName, $projCompany, $profilePhoto)) {
                 $add_success = "Project was created successfully!";
-                $_SESSION["msg_error"] = $add_errors;
                 $_SESSION["msg_success"] = $add_success;
                 header("location:projects.php");
+                exit;
             }
         }
     }

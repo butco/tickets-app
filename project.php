@@ -3,8 +3,8 @@
 require "config/init.php";
 //check if user is logged in. If not then redirect to index
 $users->logged_out_redirect();
-$edit_errors = "";
-$edit_success = "";
+$msg_errors = null;
+$msg_success = null;
 $profilePhotoName = "";
 $profilePhoto = "images/projects/project_placeholder.png";
 //Save all user details into $user object
@@ -20,57 +20,83 @@ $unassignedUsers = $projects->GetUnassignedUsers($project->id);
 //Start ticket
 if (isset($_GET["start_ticket"]) && !empty($_GET["start_ticket"])) {
     if ($tickets->StartTicket($_GET["start_ticket"])) {
-        $edit_success = "Ticket started successfully!";
+        $msg_success = "Ticket started successfully!";
+        $_SESSION["proj_msg_success"] = $msg_success;
         header("location:project.php?proj_id=" . $project->id);
+        exit;
     } else {
-        $edit_errors = "Couldn't start the ticket!";
+        $msg_errors = "Couldn't start the ticket!";
+        $_SESSION["proj_msg_error"] = $msg_errors;
+        header("location:project.php?proj_id=" . $project->id);
+        exit;
     }
 }
 
 //Close ticket
 if (isset($_GET["close_ticket"]) && !empty($_GET["close_ticket"])) {
     if ($tickets->CloseTicket($_GET["close_ticket"])) {
-        $edit_success = "Ticket closed successfully!";
+        $msg_success = "Ticket closed successfully!";
+        $_SESSION["proj_msg_success"] = $msg_success;
         header("location:project.php?proj_id=" . $project->id);
+        exit;
     } else {
-        $edit_errors = "Couldn't close the ticket!";
+        $msg_errors = "Couldn't close the ticket!";
+        $_SESSION["proj_msg_error"] = $msg_errors;
+        header("location:project.php?proj_id=" . $project->id);
+        exit;
     }
 }
 
 //Delete ticket
 if (isset($_GET["del_ticket"]) && !empty($_GET["del_ticket"])) {
     if ($tickets->DeleteTicket($_GET["del_ticket"])) {
-        $edit_success = "Ticket deleted successfully!";
+        $msg_success = "Ticket deleted successfully!";
+        $_SESSION["proj_msg_success"] = $msg_success;
         header("location:project.php?proj_id=" . $project->id);
+        exit;
     } else {
-        $edit_errors = "Couldn't delete the ticket!";
+        $msg_errors = "Couldn't delete the ticket!";
+        $_SESSION["proj_msg_error"] = $msg_errors;
+        header("location:project.php?proj_id=" . $project->id);
+        exit;
     }
 }
 
 //Assign user to project
 if (isset($_GET["assign"]) && !empty($_GET["assign"])) {
     if ($projects->AssignUserToProject($project->id, $_GET["assign"])) {
-        $edit_success = "User assigned successfully!";
+        $msg_success = "User assigned successfully!";
+        $_SESSION["proj_msg_success"] = $msg_success;
         header("location:project.php?proj_id=" . $project->id);
+        exit;
     } else {
-        $edit_errors = "Couldn't assign user to this project!";
+        $msg_errors = "Couldn't assign user to this project!";
+        $_SESSION["proj_msg_error"] = $msg_errors;
+        header("location:project.php?proj_id=" . $project->id);
+        exit;
     }
 }
 
 //Unassign user from project
 if (isset($_GET["unassign"]) && !empty($_GET["unassign"])) {
     if ($projects->UnassignUserFromProject($project->id, $_GET["unassign"])) {
-        $edit_success = "User unassigned successfully!";
+        $msg_success = "User unassigned successfully!";
+        $_SESSION["proj_msg_success"] = $msg_success;
         header("location:project.php?proj_id=" . $project->id);
+        exit;
     } else {
-        $edit_errors = "Couldn't unassign user from this project!";
+        $msg_errors = "Couldn't unassign user from this project!";
+        $_SESSION["proj_msg_error"] = $msg_errors;
+        header("location:project.php?proj_id=" . $project->id);
+        exit;
     }
 }
 
 //Update button is pressed
 if (isset($_POST['btnUpdate'])) {
     if (empty($_POST['inputProjName']) || empty($_POST['inputCompany'])) {
-        $edit_errors = "Please fill in all the fields!";
+        $msg_errors = "Please fill in all the fields!";
+        $_SESSION["proj_msg_error"] = $msg_errors;
     } else {
         $projName = trim($_POST['inputProjName']);
         $projCompany = trim($_POST['inputCompany']);
@@ -79,29 +105,32 @@ if (isset($_POST['btnUpdate'])) {
             $profilePhotoName = $_FILES['profileImage']['name'];
             $target = "images/projects/" . $profilePhotoName;
             $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
-            // Check file size
-            if ($_FILES['profileImage']['size'] > 500000) {
-                $edit_errors = "Sorry, your file is too large!";
-            } // Allow certain file formats
-            else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                && $imageFileType != "gif") {
-                $edit_errors = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-            } else {
-                if (!file_exists($target)) {
-                    move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
-                }
-                $profilePhoto = $target;
+            if ($imageFileType !== "jpg" && $imageFileType !== "png" && $imageFileType !== "jpeg"
+                && $imageFileType !== "gif") {
+                $msg_errors .= "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                $_SESSION["proj_msg_error"] = $msg_errors;
             }
+            if (filesize($_FILES['profileImage']['tmp_name']) > 1000000) {
+                $msg_errors .= "Sorry, your file is too large!";
+                $_SESSION["proj_msg_error"] = $msg_errors;
+            }
+            if (!file_exists($target) && empty($msg_errors)) {
+                move_uploaded_file($_FILES['profileImage']['tmp_name'], $target);
+            }
+            $profilePhoto = $target;
+
         } else {
             $profilePhoto = $project->proj_logo;
         }
 
-        //do the insert in the DB
-        if ($projects->UpdateProject($project->id, $projName, $projCompany, $profilePhoto)) {
-            $edit_success = "Project was updated successfully!";
-            $_SESSION["msg_error"] = $edit_errors;
-            $_SESSION["msg_success"] = $edit_success;
-            header("location:projects.php");
+        //do the update in the DB
+        if (empty($_SESSION["proj_msg_error"])) {
+            if ($projects->UpdateProject($project->id, $projName, $projCompany, $profilePhoto)) {
+                $msg_success = "Project was updated successfully!";
+                $_SESSION["proj_msg_success"] = $msg_success;
+                header("location:project.php?proj_id=" . $project->id);
+                exit;
+            }
         }
     }
 }
@@ -122,14 +151,24 @@ include "includes/header.php";
     <div class="row">
         <?php include "includes/sidebar.php";?>
         <div class="col-lg-10 col-md-9 col-sm-8 col-xs-1">
-            <?php if ($edit_errors != ""): ?>
+            <?php if (isset($_SESSION["proj_msg_error"]) && !empty($_SESSION["proj_msg_error"])): ?>
             <div class="alert alert-danger" role="alert">
-                <strong><?=$edit_errors;?></strong>
+                <strong><?php echo $_SESSION["proj_msg_error"];unset($_SESSION["proj_msg_error"]); ?></strong>
             </div>
             <?php endif;?>
-            <?php if ($edit_success != ""): ?>
+            <?php if (isset($_SESSION["proj_msg_success"]) && !empty($_SESSION["proj_msg_success"])): ?>
             <div class="alert alert-success" role="alert">
-                <strong><?=$edit_success;?></strong>
+                <strong><?php echo $_SESSION["proj_msg_success"];unset($_SESSION["proj_msg_success"]); ?></strong>
+            </div>
+            <?php endif;?>
+            <?php if (isset($_SESSION["edit_ticket_error"]) && !empty($_SESSION["edit_ticket_error"])): ?>
+            <div class="alert alert-danger" role="alert">
+                <strong><?php echo $_SESSION["edit_ticket_error"];unset($_SESSION["edit_ticket_error"]); ?></strong>
+            </div>
+            <?php endif;?>
+            <?php if (isset($_SESSION["edit_ticket_success"]) && !empty($_SESSION["edit_ticket_success"])): ?>
+            <div class="alert alert-success" role="alert">
+                <strong><?php echo $_SESSION["edit_ticket_success"];unset($_SESSION["edit_ticket_success"]); ?></strong>
             </div>
             <?php endif;?>
             <div class="row tickets">
@@ -161,16 +200,21 @@ include "includes/header.php";
                                             <td>
                                                 <?php if ($ticket->status == "OPEN"): ?>
                                                 <a href="project.php?proj_id=<?php echo $ticket->project_id; ?>&start_ticket=<?php echo $ticket->id; ?>"
-                                                    class="ticket-actions"><i class="fas fa-play start-ticket"></i></a>
+                                                    title="Start Ticket" class="ticket-actions"><i
+                                                        class="fas fa-play start-ticket"></i></a>
                                                 <?php elseif ($ticket->status == "IN_PROGRESS"): ?>
                                                 <a href="project.php?proj_id=<?php echo $ticket->project_id; ?>&close_ticket=<?php echo $ticket->id; ?>"
-                                                    class="ticket-actions"><i class="fas fa-stop close-ticket"></i></a>
+                                                    title="Close Ticket" class="ticket-actions"><i
+                                                        class="fas fa-stop close-ticket"></i></a>
                                                 <?php endif;?>
-                                                <a href="ticket.php?id=<?php echo $ticket->id; ?>"
+                                                <a href="ticket.php?id=<?php echo $ticket->id; ?>" title="View Ticket"
                                                     class="ticket-actions"><i class="far fa-eye view-ticket"></i></a>
+                                                <a href="edit-ticket.php?id=<?php echo $ticket->id; ?>"
+                                                    title="Edit Ticket" class="ticket-actions"><i
+                                                        class="far fa-edit edit-ticket"></i></a>
                                                 <?php if ($users->UserIsAdmin($user->id)): ?><a
                                                     href="project.php?proj_id=<?php echo $ticket->project_id; ?>&del_ticket=<?php echo $ticket->id; ?>"
-                                                    class="ticket-actions"><i
+                                                    title="Delete Ticket" class="ticket-actions"><i
                                                         class="far fa-trash-alt delete-ticket"></i></a><?php endif;?>
                                             </td>
                                             <td><?php echo $ticket->id; ?></td>

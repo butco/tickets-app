@@ -144,7 +144,7 @@ class Projects
         try {
             $stmt->execute();
             if ($stmt->rowCount()) {
-                return $true;
+                return true;
             } else {
                 return false;
             }
