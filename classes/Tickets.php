@@ -109,7 +109,7 @@ class Tickets
     //Close Ticket
     public function CloseTicket($id, $close_details)
     {
-        $sql = "UPDATE tickets SET status='CLOSED',close_details=:close_details,close_date=" . date("Y-m-d H:i:s") . " WHERE id=:id";
+        $sql = "UPDATE tickets SET status='CLOSED',close_details=:close_details,close_date=CURRENT_TIMESTAMP WHERE id=:id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindparam(":id", $id);
         $stmt->bindparam(":close_details", $close_details);

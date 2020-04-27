@@ -31,7 +31,7 @@ button {
 }
 // End General use
 .container-bg {
-  height: 100vh;
+  min-height: 100vh;
   background: linear-gradient(
       45deg,
       rgba(143, 64, 240, 0.2) 0%,
@@ -83,7 +83,6 @@ button {
   // background-attachment: fixed;
   // background-size: contain;
 }
-
 .row-index {
   display: flex;
   align-items: center;
@@ -112,17 +111,13 @@ button {
   }
 }
 // ***** Dashboard.php *****
-.container-full-height {
-  height: 100%;
-}
-
 .dashboard-alert {
   margin: 0;
   text-align: center;
 }
 .sidebar {
   background: $sidebar-color;
-  // height: 100%;
+  min-height: 100vh;
   .brand {
     font-size: 1.8em;
     border-bottom: $menu-hr;
@@ -384,6 +379,9 @@ button {
     text-decoration: none;
     color: $users-card-text-color;
     margin: 0 2px;
+    .edit-ticket:hover {
+      color: black;
+    }
     .start-ticket:hover {
       color: green;
     }
@@ -391,9 +389,6 @@ button {
       color: red;
     }
     .view-ticket:hover {
-      color: #a07eca;
-    }
-    .edit-ticket:hover {
       color: #a07eca;
     }
     .delete-ticket:hover {

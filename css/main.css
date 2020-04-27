@@ -32,7 +32,7 @@ button {
 }
 
 .container-bg {
-  height: 100vh;
+  min-height: 100vh;
   background: linear-gradient(45deg, rgba(143, 64, 240, 0.2) 0%, rgba(143, 64, 240, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 100.002%), linear-gradient(22.5deg, rgba(143, 64, 240, 0.2) 0%, rgba(143, 64, 240, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 100.002%), linear-gradient(0deg, rgba(143, 64, 240, 0.2) 0%, rgba(143, 64, 240, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 16.667%, rgba(124, 44, 236, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 33.334%, rgba(161, 85, 244, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 50.001%, rgba(198, 125, 252, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 66.668%, rgba(180, 105, 248, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 83.335%, rgba(106, 24, 232, 0.2) 100.002%), linear-gradient(90deg, #b3b3b3, #606060);
 }
 
@@ -77,10 +77,6 @@ button {
   margin: 20px 0;
 }
 
-.container-full-height {
-  height: 100%;
-}
-
 .dashboard-alert {
   margin: 0;
   text-align: center;
@@ -88,6 +84,7 @@ button {
 
 .sidebar {
   background: rgba(0, 0, 0, 0.6);
+  min-height: 100vh;
 }
 
 .sidebar .brand {
@@ -419,6 +416,10 @@ button {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.6);
   margin: 0 2px;
+}
+
+.row.tickets .ticket-actions .edit-ticket:hover {
+  color: black;
 }
 
 .row.tickets .ticket-actions .start-ticket:hover {
