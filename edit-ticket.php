@@ -14,9 +14,9 @@ $assignedUserName = $users->UserDetails($ticket->user_id);
 
 if ($users->UserIsAdmin($user->id) !== true) {
     if ($user->id !== $ticket->user_id) {
-        $edit_errors = "You are not allowed to edit Ticket #" . $ticket->id;
+        $edit_errors = "You are not allowed to edit Ticket #" . $_GET["id"];
         $_SESSION["edit_ticket_error"] = $edit_errors;
-        header("location:my-projects.php");
+        header("location:project.php?proj_id=" . $project->id);
         exit;
     }
 }

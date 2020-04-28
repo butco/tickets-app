@@ -10,6 +10,13 @@ $user = $users->UserDetails($_SESSION['user_id']);
 $project = $projects->ProjectDetails($_GET["proj_id"]);
 $usersOnProject = $projects->GetAssignedUsers($project->id);
 
+if ((!$users->UserIsAdmin($user->id)) && (!$projects->CheckUserAssignedOnProject($user->id, $project->id))) {
+    $add_errors = "You are not allowed to add a new ticket on this project!";
+    $_SESSION["msg_error"] = $add_errors;
+    header("location:my-projects.php");
+    exit;
+}
+
 //Add button is pressed
 if (isset($_POST['btnAdd'])) {
     if (empty($_POST['inputTicketTitle'])) {

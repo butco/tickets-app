@@ -17,33 +17,32 @@ $allTickets = $tickets->GetAllProjectsTickets($project->id, $statuses['status'])
 $usersOnProject = $projects->GetAssignedUsers($project->id);
 $unassignedUsers = $projects->GetUnassignedUsers($project->id);
 
-//Start ticket
-if (isset($_GET["start_ticket"]) && !empty($_GET["start_ticket"])) {
-    if ($tickets->StartTicket($_GET["start_ticket"])) {
-        $msg_success = "Ticket started successfully!";
-        $_SESSION["proj_msg_success"] = $msg_success;
-        header("location:project.php?proj_id=" . $project->id);
-        exit;
-    } else {
-        $msg_errors = "Couldn't start the ticket!";
-        $_SESSION["proj_msg_error"] = $msg_errors;
-        header("location:project.php?proj_id=" . $project->id);
-        exit;
-    }
+if ((!$users->UserIsAdmin($user->id)) && (!$projects->CheckUserAssignedOnProject($user->id, $project->id))) {
+    $msg_errors = "You are not allowed to view this project!";
+    $_SESSION["msg_error"] = $msg_errors;
+    header("location:my-projects.php");
+    exit;
 }
 
-//Close ticket
-if (isset($_GET["close_ticket"]) && !empty($_GET["close_ticket"])) {
-    if ($tickets->CloseTicket($_GET["close_ticket"])) {
-        $msg_success = "Ticket closed successfully!";
-        $_SESSION["proj_msg_success"] = $msg_success;
-        header("location:project.php?proj_id=" . $project->id);
-        exit;
-    } else {
-        $msg_errors = "Couldn't close the ticket!";
+//Start ticket
+if (isset($_GET["start_ticket"]) && !empty($_GET["start_ticket"])) {
+    if (($users->UserIsAdmin($user->id) !== true) && ($user->id !== $ticket->user_id)) {
+        $msg_errors = "You are not allowed to start Ticket #" . $_GET["start_ticket"];
         $_SESSION["proj_msg_error"] = $msg_errors;
         header("location:project.php?proj_id=" . $project->id);
         exit;
+    } else {
+        if ($tickets->StartTicket($_GET["start_ticket"])) {
+            $msg_success = "Ticket started successfully!";
+            $_SESSION["proj_msg_success"] = $msg_success;
+            header("location:project.php?proj_id=" . $project->id);
+            exit;
+        } else {
+            $msg_errors = "Couldn't start the ticket!";
+            $_SESSION["proj_msg_error"] = $msg_errors;
+            header("location:project.php?proj_id=" . $project->id);
+            exit;
+        }
     }
 }
 
@@ -203,7 +202,7 @@ include "includes/header.php";
                                                     title="Start Ticket" class="ticket-actions"><i
                                                         class="fas fa-play start-ticket"></i></a>
                                                 <?php elseif ($ticket->status == "IN_PROGRESS"): ?>
-                                                <a href="project.php?proj_id=<?php echo $ticket->project_id; ?>&close_ticket=<?php echo $ticket->id; ?>"
+                                                <a href="close-ticket.php?id=<?php echo $ticket->id; ?>"
                                                     title="Close Ticket" class="ticket-actions"><i
                                                         class="fas fa-stop close-ticket"></i></a>
                                                 <?php endif;?>
