@@ -8,11 +8,11 @@ $user = $users->UserDetails($_SESSION['user_id']);
 $allProjects = $projects->GetAllProjects();
 //if the logged in user is not administrator
 //then the user does not have access on this page
-// if ($user->user_group_id !== 1) {
-//     $_SESSION["msg_error"] = "You don't have permission to access the URL!";
-//     header("location:dashboard.php");
-//     exit;
-// }
+if (!$users->UserIsAdmin($user->id)) {
+    $_SESSION["msg_error"] = "You don't have permission to access the URL!";
+    header("location:dashboard.php");
+    exit;
+}
 include "includes/header.php";
 ?>
 <?php if (isset($_SESSION["msg_error"]) && !empty($_SESSION["msg_error"])): ?>

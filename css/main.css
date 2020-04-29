@@ -397,45 +397,59 @@ button {
   border-radius: 50%;
 }
 
-.row.tickets {
-  margin: 30px 30px 0 30px;
+.row.tickets,
+.row.closed-tickets {
+  margin-top: 30px;
 }
 
-.row.tickets .btn-new-ticket {
+.row.tickets .btn-new-ticket,
+.row.closed-tickets .btn-new-ticket {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.6);
   padding: 5px 5px;
   font-weight: bold;
 }
 
-.row.tickets .btn-new-ticket:hover {
+.row.tickets .btn-new-ticket:hover,
+.row.closed-tickets .btn-new-ticket:hover {
   color: #000;
 }
 
-.row.tickets .ticket-actions {
+.row.tickets .ticket-actions,
+.row.closed-tickets .ticket-actions {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.6);
   margin: 0 2px;
 }
 
-.row.tickets .ticket-actions .edit-ticket:hover {
+.row.tickets .ticket-actions .edit-ticket:hover,
+.row.closed-tickets .ticket-actions .edit-ticket:hover {
   color: black;
 }
 
-.row.tickets .ticket-actions .start-ticket:hover {
+.row.tickets .ticket-actions .start-ticket:hover,
+.row.closed-tickets .ticket-actions .start-ticket:hover {
   color: green;
 }
 
-.row.tickets .ticket-actions .close-ticket:hover {
+.row.tickets .ticket-actions .close-ticket:hover,
+.row.closed-tickets .ticket-actions .close-ticket:hover {
   color: red;
 }
 
-.row.tickets .ticket-actions .view-ticket:hover {
+.row.tickets .ticket-actions .view-ticket:hover,
+.row.closed-tickets .ticket-actions .view-ticket:hover {
   color: #a07eca;
 }
 
-.row.tickets .ticket-actions .delete-ticket:hover {
+.row.tickets .ticket-actions .delete-ticket:hover,
+.row.closed-tickets .ticket-actions .delete-ticket:hover {
   color: red;
+}
+
+.row.closed-tickets {
+  margin-top: 5px;
+  margin-bottom: 30px;
 }
 
 .card.card-assigned-users {

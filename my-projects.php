@@ -9,20 +9,20 @@ $myProjects = $projects->GetProjectsByUser($user->id);
 
 include "includes/header.php";
 ?>
-<?php if (isset($_SESSION["edit_ticket_error"]) && !empty($_SESSION["edit_ticket_error"])): ?>
-<div class="alert alert-danger dashboard-alert" role="alert">
-    <?php echo $_SESSION["edit_ticket_error"];unset($_SESSION["edit_ticket_error"]); ?>
-</div>
-<?php endif;?>
-<?php if (isset($_SESSION["msg_error"]) && !empty($_SESSION["msg_error"])): ?>
-<div class="alert alert-danger dashboard-alert" role="alert">
-    <?php echo $_SESSION["msg_error"];unset($_SESSION["msg_error"]); ?>
-</div>
-<?php endif;?>
 <div class="container-fluid container-bg container-full-height">
     <div class="row">
         <?php include "includes/sidebar.php";?>
         <div class="col-lg-10 col-md-9 col-sm-8 col-xs-1">
+            <?php if (isset($_SESSION["edit_ticket_error"]) && !empty($_SESSION["edit_ticket_error"])): ?>
+            <div class="alert alert-danger dashboard-alert" role="alert">
+                <?php echo $_SESSION["edit_ticket_error"];unset($_SESSION["edit_ticket_error"]); ?>
+            </div>
+            <?php endif;?>
+            <?php if (isset($_SESSION["msg_error"]) && !empty($_SESSION["msg_error"])): ?>
+            <div class="alert alert-danger dashboard-alert" role="alert">
+                <?php echo $_SESSION["msg_error"];unset($_SESSION["msg_error"]); ?>
+            </div>
+            <?php endif;?>
             <div class="page-title">My Projects</div>
             <?php if (empty($myProjects)): ?>
             <div class="alert alert-info mt-3" role="alert">You are not assigned on any of the projects!</div>

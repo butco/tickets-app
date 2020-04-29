@@ -141,4 +141,21 @@ class Tickets
             die($e->getMessage());
         }
     }
+
+    //Get all the tickets for a specific user
+    public function GetAllTicketsForUser($userId, $status)
+    {
+        $sql = "SELECT t.*,u.user_fullname FROM tickets t,users u WHERE t.user_id = u.id AND t.user_id = :userId AND t.status IN (" . $status . ")";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":userId", $userId);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount()) {
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                return $result;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
 }
