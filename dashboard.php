@@ -5,14 +5,28 @@ require "config/init.php";
 $users->logged_out_redirect();
 //Save all user details into $user object
 $user = $users->UserDetails($_SESSION['user_id']);
-$allProjects = $projects->GetAllProjects();
-$allOpenTickets = $tickets->GetTicketsByStatus("OPEN");
-$allStartedTickets = $tickets->GetTicketsByStatus("IN_PROGRESS");
-$allClosedTickets = $tickets->GetTicketsByStatus("CLOSED");
-$statuses = array('status' => "'OPEN', 'IN_PROGRESS'");
-$latestTickets = $tickets->GetLatestTickets($statuses['status']);
-$countProgressTickets = $tickets->GetCountProgressTickets();
-$allActiveUsers = $users->GetAllUsers("user_is_active", 1);
+if ($users->UserIsAdmin($user->id)) {
+    $allProjects = $projects->GetAllProjects();
+    $allOpenTickets = $tickets->GetTicketsByStatus("OPEN");
+    $allStartedTickets = $tickets->GetTicketsByStatus("IN_PROGRESS");
+    $allClosedTickets = $tickets->GetTicketsByStatus("CLOSED");
+    $statuses = array('status' => "'OPEN', 'IN_PROGRESS'");
+    $latestTickets = $tickets->GetLatestTickets($statuses['status']);
+    $countProgressTickets = $tickets->GetCountProgressTickets();
+    $allActiveUsers = $users->GetAllUsers("user_is_active", 1);
+} else {
+    //variables for standard user
+    $openStatus = array('status' => "'OPEN'");
+    $startedStatus = array('status' => "'IN_PROGRESS'");
+    $closedStatus = array('status' => "'CLOSED'");
+    $userOpenTickets = $tickets->GetAllTicketsForUser($user->id, $openStatus['status']);
+    $userStartedTickets = $tickets->GetAllTicketsForUser($user->id, $startedStatus['status']);
+    $userClosedTickets = $tickets->GetAllTicketsForUser($user->id, $closedStatus['status']);
+    $userProjects = $projects->GetProjectsByUser($user->id);
+    $statuses = array('status' => "'OPEN', 'IN_PROGRESS'");
+    $userLatestTickets = $tickets->GetUsersLatestTickets($user->id, $statuses['status']);
+    $countUsersProgressTickets = $tickets->GetCountUserProgressTickets($user->id);
+}
 include "includes/header.php";
 ?>
 <div class="container-fluid container-bg container-full-height">
@@ -35,20 +49,23 @@ include "includes/header.php";
                     <div class="card-title">TICKETS</div>
                     <div class="card-body">
                         <div class="tickets-total">
-                            <span class="number"><?php echo $allOpenTickets; ?></span>
+                            <span
+                                class="number"><?php echo ($users->UserIsAdmin($user->id) ? count($allOpenTickets) : count($userOpenTickets)); ?></span>
                             <p class="text">OPEN</p>
                         </div>
                         <div class="tickets-started">
-                            <span class="number"><?php echo $allStartedTickets; ?></span>
+                            <span
+                                class="number"><?php echo ($users->UserIsAdmin($user->id) ? count($allStartedTickets) : count($userStartedTickets)); ?></span>
                             <p class="text">IN PROGRESS</p>
                         </div>
                         <div class="tickets-closed">
-                            <span class="number"><?php echo $allClosedTickets; ?></span>
+                            <span
+                                class="number"><?php echo ($users->UserIsAdmin($user->id) ? count($allClosedTickets) : count($userClosedTickets)); ?></span>
                             <p class="text">CLOSED</p>
                         </div>
                         <div class="tickets-total">
                             <span
-                                class="number"><?php echo $allOpenTickets + $allStartedTickets + $allClosedTickets; ?></span>
+                                class="number"><?php echo ($users->UserIsAdmin($user->id) ? (count($allOpenTickets) + count($allStartedTickets) + count($allClosedTickets)) : (count($userOpenTickets) + count($userStartedTickets) + count($userClosedTickets))); ?></span>
                             <p class="text">TOTAL</p>
                         </div>
                     </div>
@@ -56,7 +73,8 @@ include "includes/header.php";
                 <div class="card dashboard-cards-projects">
                     <div class="card-title">PROJECTS</div>
                     <div class="card-body">
-                        <span class="number"><?php echo count($allProjects); ?></span>
+                        <span
+                            class="number"><?php echo ($users->UserIsAdmin($user->id) ? count($allProjects) : count($userProjects)); ?></span>
                     </div>
                 </div>
                 <div class="card dashboard-cards-top">
@@ -65,7 +83,7 @@ include "includes/header.php";
                         <div class="table-responsive-xl">
                             <table class="table table-hover top5-table">
                                 <tbody>
-                                    <?php foreach ($countProgressTickets as $proj): ?>
+                                    <?php foreach (($users->UserIsAdmin($user->id) ? $countProgressTickets : $countUsersProgressTickets) as $proj): ?>
                                     <tr>
                                         <td><?php echo $proj->proj_name; ?></td>
                                         <td><?php echo $proj->NO; ?></td>
@@ -80,7 +98,8 @@ include "includes/header.php";
                     <div class="no-of-users">
                         <div class="card-title">USERS</div>
                         <div class="card-body">
-                            <span class="number"><?php echo count($allActiveUsers); ?></span>
+                            <span
+                                class="number"><?php echo ($users->UserIsAdmin($user->id) ? count($allActiveUsers) : "N/A"); ?></span>
                         </div>
                     </div>
                 </div>
@@ -104,7 +123,7 @@ include "includes/header.php";
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($latestTickets as $ticket): ?>
+                                    <?php foreach (($users->UserIsAdmin($user->id) ? $latestTickets : $userLatestTickets) as $ticket): ?>
                                     <tr>
                                         <td>
                                             <a href="ticket.php?id=<?php echo $ticket->id; ?>" title="View Ticket"

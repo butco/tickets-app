@@ -162,15 +162,14 @@ class Tickets
     //Get all the tickets by status
     public function GetTicketsByStatus($status)
     {
-        $sql = "SELECT * FROM tickets t WHERE t.status = :status";
+        $sql = "SELECT t.* FROM tickets t WHERE t.status = :status";
         $stmt = $this->db->prepare($sql);
         $stmt->bindparam(":status", $status);
         try {
             $stmt->execute();
             if ($stmt->rowCount()) {
-                return $stmt->rowCount();
-            } else {
-                return 0;
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                return $result;
             }
         } catch (PDOException $e) {
             die($e->getMessage());
@@ -193,11 +192,45 @@ class Tickets
         }
     }
 
+    //Get all the user's latest tickets
+    public function GetUsersLatestTickets($userId, $status)
+    {
+        $sql = "SELECT t.*,u.user_fullname,p.proj_name FROM tickets t,users u,projects p WHERE t.user_id = u.id AND t.user_id = :userId AND t.project_id = p.id AND t.status IN (" . $status . ") ORDER BY t.create_date DESC LIMIT 5";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":userId", $userId);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount()) {
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                return $result;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
     //Count the "IN_PROGRESS" tickets
     public function GetCountProgressTickets()
     {
         $sql = "SELECT p.proj_name,sel.NO FROM projects p,(SELECT project_id,COUNT(*) as 'NO' FROM tickets WHERE status = 'IN_PROGRESS' GROUP BY project_id) sel where sel.project_id = p.id ORDER BY NO DESC LIMIT 5";
         $stmt = $this->db->prepare($sql);
+        try {
+            $stmt->execute();
+            if ($stmt->rowCount()) {
+                $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+                return $result;
+            }
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
+
+    //Count the "IN_PROGRESS" tickets for specific user
+    public function GetCountUserProgressTickets($userId)
+    {
+        $sql = "SELECT p.proj_name,sel.NO FROM projects p,(SELECT project_id,COUNT(*) as 'NO' FROM tickets WHERE status = 'IN_PROGRESS' AND user_id = :userId GROUP BY project_id) sel where sel.project_id = p.id ORDER BY NO DESC LIMIT 5";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindparam(":userId", $userId);
         try {
             $stmt->execute();
             if ($stmt->rowCount()) {
