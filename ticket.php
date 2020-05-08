@@ -9,11 +9,6 @@ $ticket = $tickets->TicketDetails($_GET["id"]);
 $project = $projects->ProjectDetails($ticket->project_id);
 $assignedUserName = $users->UserDetails($ticket->user_id);
 
-//Update button is pressed
-if (isset($_POST['btnUpdate'])) {
-
-}
-
 include "includes/header.php";
 ?>
 <div class="container-fluid container-bg container-full-height">

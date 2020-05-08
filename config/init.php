@@ -13,3 +13,12 @@ $db = $conn->connect();
 $users = new Users($db);
 $projects = new Projects($db);
 $tickets = new Tickets($db);
+
+//Sanitize inputs
+function sanitise_inputs($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}

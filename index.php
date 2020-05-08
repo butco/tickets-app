@@ -7,8 +7,8 @@ $login_errors = '';
 $email = '';
 
 if (isset($_POST['btnLogin'])) {
-    $email = trim($_POST['inputEmail']);
-    $password = trim($_POST['inputPassword']);
+    $email = sanitise_inputs($_POST['inputEmail']);
+    $password = sanitise_inputs($_POST['inputPassword']);
 
     if (empty($email) || empty($password)) {
         $login_errors = "Please fill in your email and password!";

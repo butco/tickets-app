@@ -23,11 +23,11 @@ if ($users->UserIsAdmin($user->id) !== true) {
 
 //Close Ticket button is pressed
 if (isset($_POST['btnCloseTicket'])) {
-    if (!strlen(trim($_POST['textareaCloseDetails']))) {
+    if (!strlen(sanitise_inputs($_POST['textareaCloseDetails']))) {
         $close_errors = "Please fill in the close details!";
         $_SESSION["proj_msg_error"] = $close_errors;
     } else {
-        $closeDetails = trim($_POST["textareaCloseDetails"]);
+        $closeDetails = sanitise_inputs($_POST["textareaCloseDetails"]);
         //do the update in the DB
         if (empty($_SESSION["proj_msg_error"])) {
             if ($tickets->CloseTicket($ticket->id, $closeDetails)) {

@@ -36,9 +36,9 @@ if (isset($_POST['btnUpdate'])) {
         } else {
             $userId = $ticket->user_id;
         }
-        $title = $_POST["inputTicketTitle"];
-        $details = $_POST["textareaDetails"];
-        $status = $_POST["ticketStatusSelect"];
+        $title = sanitise_inputs($_POST["inputTicketTitle"]);
+        $details = sanitise_inputs($_POST["textareaDetails"]);
+        $status = sanitise_inputs($_POST["ticketStatusSelect"]);
         //do the update in the DB
         if (empty($_SESSION["edit_ticket_error"])) {
             if ($tickets->UpdateTicket($ticket->id, $projId, $userId, $title, $details, $status)) {

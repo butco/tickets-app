@@ -23,10 +23,10 @@ if (isset($_POST['btnAdd'])) {
         $add_errors = "Please fill in the ticket's title!";
     } else {
         $ticketProjId = $project->id;
-        $ticketUserId = $_POST["assignedUsersSelect"];
-        $ticketTitle = trim($_POST['inputTicketTitle']);
-        $ticketDetails = trim($_POST['textareaDetails']);
-        $ticketStatus = $_POST["ticketStatusSelect"];
+        $ticketUserId = sanitise_inputs($_POST["assignedUsersSelect"]);
+        $ticketTitle = sanitise_inputs($_POST['inputTicketTitle']);
+        $ticketDetails = sanitise_inputs($_POST['textareaDetails']);
+        $ticketStatus = sanitise_inputs($_POST["ticketStatusSelect"]);
         //do the insert in the DB
         if ($tickets->AddNew($ticketProjId, $ticketUserId, $ticketTitle, $ticketDetails, $ticketStatus)) {
             $add_success = "Ticket was created successfully!";
@@ -50,7 +50,8 @@ include "includes/header.php";
                             <h3>Add New Ticket</h3>
                         </div>
                         <div class="card-body">
-                            <form action="add-ticket.php?proj_id=<?php echo $_GET["proj_id"]; ?>" method="POST">
+                            <form action="add-ticket.php?proj_id=<?php echo sanitise_inputs($_GET["proj_id"]); ?>"
+                                method="POST">
                                 <?php if ($add_errors != ""): ?>
                                 <div class="alert alert-danger" role="alert">
                                     <strong><?=$add_errors;?></strong>

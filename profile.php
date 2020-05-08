@@ -51,13 +51,13 @@ if (isset($_POST['btnUpdate'])) {
         $edit_errors = "Please fill in your full name and email address!";
         $_SESSION["msg_error"] = $edit_errors;
     } else {
-        if (trim($_POST['inputFullName']) !== $userToEdit->user_fullname) {
-            $newFullName = trim($_POST['inputFullName']);
+        if (sanitise_inputs($_POST['inputFullName']) !== $userToEdit->user_fullname) {
+            $newFullName = sanitise_inputs($_POST['inputFullName']);
         } else {
             $newFullName = $userToEdit->user_fullname;
         }
-        if (trim($_POST['inputEmail']) !== $userToEdit->user_email) {
-            $newEmail = trim($_POST['inputEmail']);
+        if (sanitise_inputs($_POST['inputEmail']) !== $userToEdit->user_email) {
+            $newEmail = sanitise_inputs($_POST['inputEmail']);
         } else {
             $newEmail = $userToEdit->user_email;
         }

@@ -22,8 +22,8 @@ if (isset($_POST['btnAdd'])) {
     if (empty($_POST['inputFullName']) || empty($_POST['inputEmail']) || empty($_POST['inputPassword'])) {
         $add_errors = "Please fill in all the fields!";
     } else {
-        $fullName = trim($_POST['inputFullName']);
-        $email = trim($_POST['inputEmail']);
+        $fullName = sanitise_inputs($_POST['inputFullName']);
+        $email = sanitise_inputs($_POST['inputEmail']);
         $password = password_hash($_POST['inputPassword'], PASSWORD_DEFAULT);
 
         if (!empty($_FILES['profileImage']['name'])) {
@@ -52,8 +52,8 @@ if (isset($_POST['btnAdd'])) {
         //     $profilePhoto = ;
         // }
 
-        $groupId = $_POST['usersGroupsSelect'];
-        $active = $_POST['usersActiveSelect'];
+        $groupId = sanitise_inputs($_POST['usersGroupsSelect']);
+        $active = sanitise_inputs($_POST['usersActiveSelect']);
 
         //do the insert in the DB
         if (empty($add_errors)) {

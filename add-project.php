@@ -16,8 +16,8 @@ if (isset($_POST['btnAdd'])) {
         $add_errors .= "Please fill in all the fields!";
         $_SESSION["msg_error"] = $add_errors;
     } else {
-        $projName = trim($_POST['inputProjName']);
-        $projCompany = trim($_POST['inputCompany']);
+        $projName = sanitise_inputs($_POST['inputProjName']);
+        $projCompany = sanitise_inputs($_POST['inputCompany']);
 
         if (!empty($_FILES['profileImage']['name'])) {
             $profilePhotoName = $_FILES['profileImage']['name'];
